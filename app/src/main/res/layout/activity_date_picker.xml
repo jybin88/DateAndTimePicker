@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
+
+    <com.nd.ent.widget.date.DatePicker
+        android:id="@+id/dp_picker"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <TextView
+        android:id="@+id/tv_date"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginTop="10dp"
+        android:gravity="center"
+        android:textColor="@android:color/black"
+        android:textSize="20sp"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="10dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/btn_show_time"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="默认时间显示格式"
+                android:textAllCaps="false"
+                android:textColor="@android:color/black"/>
+
+            <Button
+                android:id="@+id/btn_format_time"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="自定义时间显示格式(yyyy/MM/dd)"
+                android:textAllCaps="false"
+                android:textColor="@android:color/black"/>
+
+            <Button
+                android:id="@+id/btn_set_time"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="更改显示时间(2016.10.25)"
+                android:textAllCaps="false"
+                android:textColor="@android:color/black"/>
+
+            <Button
+                android:id="@+id/btn_set_background"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="更改背景"
+                android:textAllCaps="false"
+                android:textColor="@android:color/black"/>
+
+            <Button
+                android:id="@+id/btn_visiable_items"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="setVisibleItems"
+                android:textAllCaps="false"/>
+
+            <Button
+                android:id="@+id/btn_change_recycle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="recycle"
+                android:textAllCaps="false"/>
+
+            <Button
+                android:id="@+id/btn_set_item_size"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="setItemSize"
+                android:textAllCaps="false"/>
+
+            <Button
+                android:id="@+id/btn_set_selected_item_size"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="setSelectedItemSize"
+                android:textAllCaps="false"/>
+
+            <Button
+                android:id="@+id/btn_set_item_color"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="setItemColor"
+                android:textAllCaps="false"/>
+
+            <Button
+                android:id="@+id/btn_set_selected_item_color"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="setSelectedItemColor"
+                android:textAllCaps="false"/>
+
+            <Button
+                android:id="@+id/btn_set_width"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="setWidth"
+                android:textAllCaps="false"/>
+
+            <Button
+                android:id="@+id/btn_set_center_drawable"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="setCenterDrawable"
+                android:textAllCaps="false"/>
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

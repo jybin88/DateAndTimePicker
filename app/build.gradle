@@ -1,0 +1,26 @@
+apply from: 'http://git.sdp.nd/EnterpriseAndroid/public/raw/master/version.gradle'
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion vCompileSdk
+    buildToolsVersion vBuildTools
+    defaultConfig {
+        applicationId "io.github.chen_youping.timetable"
+        minSdkVersion vMinSdk
+        targetSdkVersion vTargetSdk
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    compile "com.android.support:appcompat-v7:$vSupportLib"
+    compile project(':library')
+}

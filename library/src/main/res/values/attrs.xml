@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="ent_wheel_date_attr">
+        <attr name="ent_wheel_date_item_color" format="color"/>
+        <attr name="ent_wheel_date_item_selector_color" format="color"/>
+        <attr name="ent_wheel_date_item_size" format="color"/>
+        <attr name="ent_wheel_date_selected_item_size" format="color"/>
+        <attr name="ent_wheel_date_item_height" format="dimension"/>
+        <attr name="ent_wheel_date_visibility_num" format="integer"/>
+        <attr name="ent_wheel_date_center_drawable" format="reference"/>
+    </declare-styleable>
+
+    <declare-styleable name="ent_wheel_time_attr">
+        <attr name="ent_wheel_time_item_color" format="color"/>
+        <attr name="ent_wheel_time_item_selector_color" format="color"/>
+        <attr name="ent_wheel_time_item_size" format="color"/>
+        <attr name="ent_wheel_time_selected_item_size" format="color"/>
+        <attr name="ent_wheel_time_item_height" format="dimension"/>
+        <attr name="ent_wheel_time_visibility_num" format="integer"/>
+        <attr name="ent_wheel_time_center_drawable" format="reference"/>
+    </declare-styleable>
+
+    <declare-styleable name="ent_wheel_common_attr">
+        <attr name="ent_wheel_wheelItemColor" format="color"/>
+        <attr name="ent_wheel_wheelSelectedColor" format="color"/>
+        <attr name="ent_wheel_wheelItemSize" format="dimension"/>
+        <attr name="ent_wheel_wheelSelectedItemSize" format="dimension"/>
+        <attr name="ent_wheel_wheelItemHeight" format="dimension"/>
+        <attr name="ent_wheel_wheelVisibilityNum" format="integer"/>
+        <attr name="ent_wheel_wheelCenterDrawable" format="reference"/>
+        <attr name="ent_wheel_wheelContentpadding" format="dimension"/>
+    </declare-styleable>
+
+    <dimen name="ent_wheel_common_def_text_padding">5dp</dimen>
+    <dimen name="ent_wheel_common_def_text_size">17dp</dimen>
+    <dimen name="ent_wheel_common_def_selected_text_size">20dp</dimen>
+    <dimen name="ent_wheel_def_itemheight">40dp</dimen>
+
+    <color name="ent_wheel_default_color">#999999</color>
+    <color name="ent_wheel_selected_color">#333333</color>
+</resources>
