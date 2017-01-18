@@ -1,4 +1,4 @@
-package com.nd.ent.widget.date;
+package com.lfh.custom.widget.date;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -14,10 +14,10 @@ import android.view.Gravity;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
-import com.nd.ent.timetable.R;
-import com.nd.ent.widget.wheel.WheelView;
-import com.nd.ent.widget.wheel.adapter.NumericWheelAdapter;
-import com.nd.ent.widget.wheel.listener.OnWheelChangedListener;
+import com.lfh.custom.widget.R;
+import com.lfh.custom.widget.wheel.WheelView;
+import com.lfh.custom.widget.wheel.adapter.NumericWheelAdapter;
+import com.lfh.custom.widget.wheel.listener.OnWheelChangedListener;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;

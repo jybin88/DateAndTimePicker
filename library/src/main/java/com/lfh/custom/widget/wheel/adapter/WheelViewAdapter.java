@@ -1,4 +1,4 @@
-package com.nd.ent.widget.wheel.adapter;
+package com.lfh.custom.widget.wheel.adapter;
 
 import android.database.DataSetObserver;
 import android.view.View;

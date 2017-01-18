@@ -4,7 +4,7 @@
               android:layout_height="match_parent"
               android:orientation="vertical">
 
-    <com.nd.ent.widget.time.TimePicker
+    <com.lfh.custom.widget.time.TimePicker
         android:id="@+id/tp_picker"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>

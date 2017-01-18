@@ -1,7 +1,7 @@
-package com.nd.ent.widget.wheel.listener;
+package com.lfh.custom.widget.wheel.listener;
 
 
-import com.nd.ent.widget.wheel.WheelView;
+import com.lfh.custom.widget.wheel.WheelView;
 
 /**
  * Wheel clicked listener interface.

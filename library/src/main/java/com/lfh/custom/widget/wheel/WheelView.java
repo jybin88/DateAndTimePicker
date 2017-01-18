@@ -1,4 +1,4 @@
-package com.nd.ent.widget.wheel;
+package com.lfh.custom.widget.wheel;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -19,12 +19,12 @@ import android.view.ViewGroup.LayoutParams;
 import android.view.animation.Interpolator;
 import android.widget.LinearLayout;
 
-import com.nd.ent.timetable.R;
-import com.nd.ent.widget.wheel.WheelScroller.ScrollingListener;
-import com.nd.ent.widget.wheel.adapter.WheelViewAdapter;
-import com.nd.ent.widget.wheel.listener.OnWheelChangedListener;
-import com.nd.ent.widget.wheel.listener.OnWheelClickedListener;
-import com.nd.ent.widget.wheel.listener.OnWheelScrollListener;
+import com.lfh.custom.widget.R;
+import com.lfh.custom.widget.wheel.WheelScroller.ScrollingListener;
+import com.lfh.custom.widget.wheel.adapter.WheelViewAdapter;
+import com.lfh.custom.widget.wheel.listener.OnWheelChangedListener;
+import com.lfh.custom.widget.wheel.listener.OnWheelClickedListener;
+import com.lfh.custom.widget.wheel.listener.OnWheelScrollListener;
 
 import java.util.LinkedList;
 import java.util.List;

@@ -1,4 +1,4 @@
-package com.nd.ent.widget.wheel.adapter;
+package com.lfh.custom.widget.wheel.adapter;
 
 import android.content.Context;
 import android.text.TextUtils;
@@ -11,7 +11,8 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.nd.ent.timetable.R;
+import com.lfh.custom.widget.R;
+
 
 /**
  * Abstract wheel adapter provides common functionality for adapters.
