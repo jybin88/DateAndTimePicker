@@ -1,13 +1,12 @@
-apply from: 'http://git.sdp.nd/EnterpriseAndroid/public/raw/master/version.gradle'
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion vCompileSdk
-    buildToolsVersion vBuildTools
+    compileSdkVersion 24
+    buildToolsVersion "24.0.3"
     defaultConfig {
-        applicationId "io.github.chen_youping.timetable"
-        minSdkVersion vMinSdk
-        targetSdkVersion vTargetSdk
+        applicationId "io.github.timepicker"
+        minSdkVersion 15
+        targetSdkVersion 22
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -21,6 +20,6 @@ android {
 }
 
 dependencies {
-    compile "com.android.support:appcompat-v7:$vSupportLib"
+    compile "com.android.support:appcompat-v7:24.2.1"
     compile project(':library')
 }
