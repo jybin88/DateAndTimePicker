@@ -463,4 +463,14 @@ public class DatePicker extends LinearLayout {
         mMonthWheel.invalidateWheel(false);
         mDayWheel.invalidateWheel(false);
     }
+
+
+    /**
+     * 移除监听器
+     * 在Activity onDestroy()调用，避免内存泄露
+     */
+    public void removeListener() {
+        mYearWheel.removeChangingListener(yearChangedListener);
+        mMonthWheel.removeChangingListener(monthChangedListener);
+    }
 }
