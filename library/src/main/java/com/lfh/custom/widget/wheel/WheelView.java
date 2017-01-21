@@ -111,6 +111,85 @@ public class WheelView extends View {
     //和内容之间的间距
     private int contentPadding;
 
+    public WheelView(Context context) {
+        this(context, null);
+    }
+
+    public WheelView(Context context, AttributeSet attrs) {
+        this(context, attrs, R.attr.ent_picker_wheel_wheelStyle);
+    }
+
+    public WheelView(Context context, AttributeSet attrs, int defStyle) {
+        super(context, attrs, defStyle);
+        // 直接在XML中定义 > style定义                # 在layout.xml内直接写
+        // >由defStyleAttr                          # 在对应的ThemeContext里的Theme内定义
+        // 和defStyleRes指定的默认值                  # 在自定义view里指定
+        // >直接在Theme中指定的值                     # 在对应的ThemeContext里的Theme内定义
+
+        TypedArray a = context.obtainStyledAttributes(attrs, // LayoutInflater 传进来的值
+                R.styleable.ent_picker_wheel, // 自定义的 styleable，事实上是一个数组
+                defStyle, // 主题里定义的 style
+                R.style.ent_picker_wheel_wheelDefaultStyle); // 默认的 style
+
+        wheelItemColor = a.getColor(R.styleable.ent_picker_wheel_ent_picker_wheel_item_color, ContextCompat.getColor(context, R.color.ent_picker_default_color));
+        wheelSelectedColor = a.getColor(R.styleable.ent_picker_wheel_ent_picker_wheelSelectedColor, ContextCompat.getColor(context, R.color.ent_picker_selected_color));
+        wheelItemSize = a.getDimensionPixelSize(R.styleable.ent_picker_wheel_ent_picker_wheel_item_size, context.getResources().getDimensionPixelSize(R.dimen.ent_picker_selected_text_size));
+        wheelSelectedItemSize = a.getDimensionPixelSize(R.styleable.ent_picker_wheel_ent_picker_wheel_selected_item_size, context.getResources().getDimensionPixelSize(R.dimen.ent_picker_selected_text_size));
+        wheelItemHeight = a.getDimensionPixelSize(R.styleable.ent_picker_wheel_ent_picker_wheel_item_height, context.getResources().getDimensionPixelSize(R.dimen.ent_picker_wheel_item_height));
+        visibleItems = a.getInt(R.styleable.ent_picker_wheel_ent_picker_wheel_visible_count, DEF_VISIBLE_ITEMS);
+        centerDrawableId = a.getResourceId(R.styleable.ent_picker_wheel_ent_picker_wheel_center_drawable, R.drawable.ent_wheel_wheelview_item_center_bg);
+        contentPadding = a.getDimensionPixelSize(R.styleable.ent_picker_wheel_ent_picker_wheel_content_padding, 0);
+        centerDrawable = ContextCompat.getDrawable(context, centerDrawableId);
+
+        a.recycle();
+
+        initData();
+    }
+
+    /**
+     * Initializes class data
+     */
+    private void initData() {
+        scroller = new WheelScroller(getContext(), scrollingListener);
+    }
+
+    // Scrolling listener
+    ScrollingListener scrollingListener = new ScrollingListener() {
+        public void onStarted() {
+            isScrollingPerformed = true;
+            notifyScrollingListenersAboutStart();
+        }
+
+        public void onScroll(int distance) {
+            doScroll(distance);
+
+            int height = getHeight();
+            if (scrollingOffset > height) {
+                scrollingOffset = height;
+                scroller.stopScrolling();
+            } else if (scrollingOffset < -height) {
+                scrollingOffset = -height;
+                scroller.stopScrolling();
+            }
+        }
+
+        public void onFinished() {
+            if (isScrollingPerformed) {
+                notifyScrollingListenersAboutEnd();
+                isScrollingPerformed = false;
+            }
+
+            scrollingOffset = 0;
+            invalidate();
+        }
+
+        public void onJustify() {
+            if (Math.abs(scrollingOffset) > WheelScroller.MIN_DELTA_FOR_SCROLLING) {
+                scroller.scroll(scrollingOffset, 0);
+            }
+        }
+    };
+
     @SuppressWarnings("unused")
     public int getWheelItemColor() {
         return wheelItemColor;
@@ -188,119 +267,6 @@ public class WheelView extends View {
             viewAdapter.setSelectedTextColor(wheelSelectedColor);
         }
     }
-
-    /**
-     * WheelView
-     *
-     * @param context  context
-     * @param attrs    AttributeSet
-     * @param defStyle defStyle
-     */
-    public WheelView(Context context, AttributeSet attrs, int defStyle) {
-        super(context, attrs, defStyle);
-        init(context, attrs);
-        initData();
-    }
-
-    /**
-     * WheelView
-     *
-     * @param context Context
-     * @param attrs   AttributeSet
-     */
-    public WheelView(Context context, AttributeSet attrs) {
-        super(context, attrs);
-        init(context, attrs);
-        initData();
-    }
-
-    /**
-     * Constructor
-     */
-    public WheelView(Context context) {
-        super(context);
-        init(context, null);
-        initData();
-    }
-
-    @SuppressLint("PrivateResource")
-    private void init(Context context, AttributeSet attrs) {
-        int defSize = context.getResources().getDimensionPixelSize(R.dimen.ent_wheel_common_def_selected_text_size);
-        int defSelectedSize = context.getResources().getDimensionPixelSize(R.dimen.ent_wheel_common_def_selected_text_size);
-        int defColor = ContextCompat.getColor(context, R.color.ent_wheel_default_color);
-        int defSelectColor = ContextCompat.getColor(context, R.color.ent_wheel_selected_color);
-        //如果外面调用没设置android:background的话，就用默认的，7.1修改，解决过度绘制问题，不设背景
-//        if (getBackground() == null) {
-//            setBackgroundColor(CommonSkinUtils.getColor(R.color.color7));
-//        }
-
-        if (attrs != null) {
-            TypedArray t = context.obtainStyledAttributes(attrs, R.styleable.ent_wheel_common_attr);
-            wheelItemColor = t.getColor(R.styleable.ent_wheel_common_attr_ent_wheel_wheelItemColor, defColor);
-            wheelSelectedColor = t.getColor(R.styleable.ent_wheel_common_attr_ent_wheel_wheelSelectedColor, defSelectColor);
-            wheelItemSize = t.getDimensionPixelSize(R.styleable.ent_wheel_common_attr_ent_wheel_wheelItemSize, defSize);
-            wheelSelectedItemSize = t.getDimensionPixelSize(R.styleable.ent_wheel_common_attr_ent_wheel_wheelSelectedItemSize, defSize);
-            wheelItemHeight = t.getDimensionPixelSize(R.styleable.ent_wheel_common_attr_ent_wheel_wheelItemHeight, context.getResources().getDimensionPixelSize(R.dimen.ent_wheel_def_itemheight));
-            visibleItems = t.getInt(R.styleable.ent_wheel_common_attr_ent_wheel_wheelVisibilityNum, DEF_VISIBLE_ITEMS);
-            centerDrawableId = t.getResourceId(R.styleable.ent_wheel_common_attr_ent_wheel_wheelCenterDrawable, R.drawable.ent_wheel_wheelview_item_center_bg);
-            contentPadding = t.getDimensionPixelSize(R.styleable.ent_wheel_common_attr_ent_wheel_wheelContentpadding, 0);
-            t.recycle();
-        } else {
-            wheelItemColor = defColor;
-            wheelSelectedColor = defSelectColor;
-            wheelItemSize = defSize;
-            wheelSelectedItemSize = defSelectedSize;
-            wheelItemHeight = 0;
-            visibleItems = DEF_VISIBLE_ITEMS;
-            centerDrawableId = R.drawable.ent_wheel_wheelview_item_center_bg;
-        }
-
-        centerDrawable = ContextCompat.getDrawable(context, centerDrawableId);
-    }
-
-    /**
-     * Initializes class data
-     */
-    private void initData() {
-        scroller = new WheelScroller(getContext(), scrollingListener);
-    }
-
-    // Scrolling listener
-    ScrollingListener scrollingListener = new ScrollingListener() {
-        public void onStarted() {
-            isScrollingPerformed = true;
-            notifyScrollingListenersAboutStart();
-        }
-
-        public void onScroll(int distance) {
-            doScroll(distance);
-
-            int height = getHeight();
-            if (scrollingOffset > height) {
-                scrollingOffset = height;
-                scroller.stopScrolling();
-            } else if (scrollingOffset < -height) {
-                scrollingOffset = -height;
-                scroller.stopScrolling();
-            }
-        }
-
-        public void onFinished() {
-            if (isScrollingPerformed) {
-                notifyScrollingListenersAboutEnd();
-                isScrollingPerformed = false;
-            }
-
-            scrollingOffset = 0;
-            invalidate();
-        }
-
-        public void onJustify() {
-            if (Math.abs(scrollingOffset) > WheelScroller.MIN_DELTA_FOR_SCROLLING) {
-                scroller.scroll(scrollingOffset, 0);
-            }
-        }
-    };
 
     /**
      * 设置渐变颜色，至少两个值,不需要渐变传相同的值

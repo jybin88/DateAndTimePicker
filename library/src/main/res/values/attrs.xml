@@ -1,42 +1,82 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <declare-styleable name="ent_wheel_date_attr">
-        <attr name="ent_wheel_date_item_color" format="color"/>
-        <attr name="ent_wheel_date_item_selector_color" format="color"/>
-        <attr name="ent_wheel_date_item_size" format="color"/>
-        <attr name="ent_wheel_date_selected_item_size" format="color"/>
-        <attr name="ent_wheel_date_item_height" format="dimension"/>
-        <attr name="ent_wheel_date_visibility_num" format="integer"/>
-        <attr name="ent_wheel_date_center_drawable" format="reference"/>
+    <declare-styleable name="ent_picker_date">
+        <attr name="ent_picker_date_item_color" format="color"/>
+        <attr name="ent_picker_date_item_selector_color" format="color"/>
+        <attr name="ent_picker_date_item_size" format="color"/>
+        <attr name="ent_picker_date_selected_item_size" format="color"/>
+        <attr name="ent_picker_date_item_height" format="dimension"/>
+        <attr name="ent_picker_date_visible_count" format="integer"/>
+        <attr name="ent_picker_date_center_drawable" format="reference"/>
     </declare-styleable>
 
-    <declare-styleable name="ent_wheel_time_attr">
-        <attr name="ent_wheel_time_item_color" format="color"/>
-        <attr name="ent_wheel_time_item_selector_color" format="color"/>
-        <attr name="ent_wheel_time_item_size" format="color"/>
-        <attr name="ent_wheel_time_selected_item_size" format="color"/>
-        <attr name="ent_wheel_time_item_height" format="dimension"/>
-        <attr name="ent_wheel_time_visibility_num" format="integer"/>
-        <attr name="ent_wheel_time_center_drawable" format="reference"/>
+    <declare-styleable name="ent_picker_time">
+        <attr name="ent_picker_time_item_color" format="color"/>
+        <attr name="ent_picker_time_item_selected_color" format="color"/>
+        <attr name="ent_picker_time_item_size" format="color"/>
+        <attr name="ent_picker_time_selected_item_size" format="color"/>
+        <attr name="ent_picker_time_item_height" format="dimension"/>
+        <attr name="ent_picker_time_visible_count" format="integer"/>
+        <attr name="ent_picker_time_center_drawable" format="reference"/>
     </declare-styleable>
 
-    <declare-styleable name="ent_wheel_common_attr">
-        <attr name="ent_wheel_wheelItemColor" format="color"/>
-        <attr name="ent_wheel_wheelSelectedColor" format="color"/>
-        <attr name="ent_wheel_wheelItemSize" format="dimension"/>
-        <attr name="ent_wheel_wheelSelectedItemSize" format="dimension"/>
-        <attr name="ent_wheel_wheelItemHeight" format="dimension"/>
-        <attr name="ent_wheel_wheelVisibilityNum" format="integer"/>
-        <attr name="ent_wheel_wheelCenterDrawable" format="reference"/>
-        <attr name="ent_wheel_wheelContentpadding" format="dimension"/>
+    <declare-styleable name="ent_picker_wheel">
+        <attr name="ent_picker_wheel_item_color" format="color"/>
+        <attr name="ent_picker_wheelSelectedColor" format="color"/>
+        <attr name="ent_picker_wheel_item_size" format="dimension"/>
+        <attr name="ent_picker_wheel_selected_item_size" format="dimension"/>
+        <attr name="ent_picker_wheel_item_height" format="dimension"/>
+        <attr name="ent_picker_wheel_visible_count" format="integer"/>
+        <attr name="ent_picker_wheel_center_drawable" format="reference"/>
+        <attr name="ent_picker_wheel_content_padding" format="dimension"/>
     </declare-styleable>
 
-    <dimen name="ent_wheel_common_def_text_padding">5dp</dimen>
-    <dimen name="ent_wheel_common_def_text_size">17dp</dimen>
-    <dimen name="ent_wheel_common_def_selected_text_size">20dp</dimen>
-    <dimen name="ent_wheel_def_itemheight">40dp</dimen>
+    <attr name="ent_picker_wheel_wheelStyle" format="reference"/>
 
-    <color name="ent_wheel_default_color">#999999</color>
-    <color name="ent_wheel_selected_color">#333333</color>
+    <attr name="ent_picker_time_timeStyle" format="reference"/>
+
+    <attr name="ent_picker_date_dateStyle" format="reference"/>
+
+    <style name="ent_picker_wheel_wheelDefaultStyle">
+        <item name="ent_picker_wheel_item_color">@color/ent_picker_default_color</item>
+        <item name="ent_picker_wheelSelectedColor">@color/ent_picker_selected_color</item>
+        <item name="ent_picker_wheel_item_size">@dimen/ent_picker_wheel_text_size</item>
+        <item name="ent_picker_time_selected_item_size">@dimen/ent_picker_selected_text_size</item>
+        <item name="ent_picker_time_item_height">@dimen/ent_picker_wheel_item_height</item>
+        <item name="ent_picker_time_visible_count">5</item>
+        <item name="ent_picker_time_center_drawable">@drawable/ent_wheel_wheelview_item_center_bg
+        </item>
+        <item name="ent_picker_wheel_content_padding">@dimen/ent_picker_wheel_text_padding</item>
+    </style>
+
+    <style name="ent_picker_date_dateDefaultStyle">
+        <item name="ent_picker_date_item_color">@color/ent_picker_default_color</item>
+        <item name="ent_picker_date_item_selector_color">@color/ent_picker_selected_color</item>
+        <item name="ent_picker_date_item_size">@dimen/ent_picker_wheel_text_size</item>
+        <item name="ent_picker_date_selected_item_size">@dimen/ent_picker_selected_text_size</item>
+        <item name="ent_picker_date_item_height">@dimen/ent_picker_wheel_item_height</item>
+        <item name="ent_picker_date_visible_count">5</item>
+        <item name="ent_picker_date_center_drawable">@drawable/ent_wheel_wheelview_item_center_bg
+        </item>
+    </style>
+
+    <style name="ent_picker_time_timeDefaultStyle">
+        <item name="ent_picker_time_item_color">@color/ent_picker_default_color</item>
+        <item name="ent_picker_time_item_selected_color">@color/ent_picker_selected_color</item>
+        <item name="ent_picker_time_item_size">@dimen/ent_picker_wheel_text_size</item>
+        <item name="ent_picker_time_selected_item_size">@dimen/ent_picker_selected_text_size</item>
+        <item name="ent_picker_time_item_height">@dimen/ent_picker_wheel_item_height</item>
+        <item name="ent_picker_time_visible_count">5</item>
+        <item name="ent_picker_time_center_drawable">@drawable/ent_wheel_wheelview_item_center_bg
+        </item>
+    </style>
+
+    <dimen name="ent_picker_wheel_text_padding">5dp</dimen>
+    <dimen name="ent_picker_wheel_text_size">17dp</dimen>
+    <dimen name="ent_picker_selected_text_size">20dp</dimen>
+    <dimen name="ent_picker_wheel_item_height">40dp</dimen>
+
+    <color name="ent_picker_default_color">#999999</color>
+    <color name="ent_picker_selected_color">#333333</color>
 </resources>

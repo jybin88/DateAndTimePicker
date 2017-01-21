@@ -79,45 +79,34 @@ public class TimePicker extends LinearLayout {
     private NumericWheelAdapter mHourWheelAdapter;
 
     public TimePicker(Context context) {
-        super(context);
-        init(context, null);
+        this(context, null);
     }
 
     public TimePicker(Context context, AttributeSet attrs) {
-        super(context, attrs);
-        init(context, attrs);
+        this(context, attrs, R.attr.ent_picker_time_timeStyle);
     }
 
     public TimePicker(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        init(context, attrs);
-    }
+        // 直接在XML中定义 > style定义                # 在layout.xml内直接写
+        // >由defStyleAttr                          # 在对应的ThemeContext里的Theme内定义
+        // 和defStyleRes指定的默认值                  # 在自定义view里指定
+        // >直接在Theme中指定的值                     # 在对应的ThemeContext里的Theme内定义
 
-    private void init(Context context, AttributeSet attrs) {
-        int defSize = context.getResources().getDimensionPixelSize(R.dimen.ent_wheel_common_def_selected_text_size);
-        int defSelectedSize = context.getResources().getDimensionPixelSize(R.dimen.ent_wheel_common_def_selected_text_size);
-        int defColor = ContextCompat.getColor(context, R.color.ent_wheel_default_color);
-        int defSelectColor = ContextCompat.getColor(context, R.color.ent_wheel_selected_color);
+        TypedArray a = context.obtainStyledAttributes(attrs, // LayoutInflater 传进来的值
+                R.styleable.ent_picker_time, // 自定义的 styleable，事实上是一个数组
+                defStyleAttr, // 主题里定义的 style
+                R.style.ent_picker_time_timeDefaultStyle); // 默认的 style
 
-        if (attrs != null) {
-            TypedArray t = context.obtainStyledAttributes(attrs, R.styleable.ent_wheel_time_attr);
-            mItemColor = t.getColor(R.styleable.ent_wheel_time_attr_ent_wheel_time_item_color, defColor);
-            mSelectedColor = t.getColor(R.styleable.ent_wheel_time_attr_ent_wheel_time_item_selector_color, defSelectColor);
-            mItemSize = t.getDimensionPixelSize(R.styleable.ent_wheel_time_attr_ent_wheel_time_item_size, defSize);
-            mSelectedItemSize = t.getDimensionPixelSize(R.styleable.ent_wheel_time_attr_ent_wheel_time_selected_item_size, defSize);
-            mItemHeight = t.getDimensionPixelSize(R.styleable.ent_wheel_time_attr_ent_wheel_time_item_height, context.getResources().getDimensionPixelSize(R.dimen.ent_wheel_def_itemheight));
-            mVisibleItems = t.getInt(R.styleable.ent_wheel_time_attr_ent_wheel_time_visibility_num, DEF_VISIBLE_ITEMS);
-            mCenterDrawableId = t.getResourceId(R.styleable.ent_wheel_time_attr_ent_wheel_time_center_drawable, R.drawable.ent_wheel_wheelview_item_center_bg);
-            t.recycle();
-        } else {
-            mItemColor = defColor;
-            mSelectedColor = defSelectColor;
-            mItemSize = defSize;
-            mSelectedItemSize = defSelectedSize;
-            mItemHeight = context.getResources().getDimensionPixelSize(R.dimen.ent_wheel_def_itemheight);
-            mVisibleItems = DEF_VISIBLE_ITEMS;
-            mCenterDrawableId = R.drawable.ent_wheel_wheelview_item_center_bg;
-        }
+        mItemColor = a.getColor(R.styleable.ent_picker_time_ent_picker_time_item_color, ContextCompat.getColor(context, R.color.ent_picker_default_color));
+        mSelectedColor = a.getColor(R.styleable.ent_picker_time_ent_picker_time_item_selected_color, ContextCompat.getColor(context, R.color.ent_picker_selected_color));
+        mItemSize = a.getDimensionPixelSize(R.styleable.ent_picker_time_ent_picker_time_item_size, context.getResources().getDimensionPixelSize(R.dimen.ent_picker_selected_text_size));
+        mSelectedItemSize = a.getDimensionPixelSize(R.styleable.ent_picker_time_ent_picker_time_selected_item_size, context.getResources().getDimensionPixelSize(R.dimen.ent_picker_selected_text_size));
+        mItemHeight = a.getDimensionPixelSize(R.styleable.ent_picker_time_ent_picker_time_item_height, context.getResources().getDimensionPixelSize(R.dimen.ent_picker_wheel_item_height));
+        mVisibleItems = a.getInt(R.styleable.ent_picker_time_ent_picker_time_visible_count, DEF_VISIBLE_ITEMS);
+        mCenterDrawableId = a.getResourceId(R.styleable.ent_picker_time_ent_picker_time_center_drawable, R.drawable.ent_wheel_wheelview_item_center_bg);
+
+        a.recycle();
 
         setOrientation(HORIZONTAL);
         setGravity(Gravity.CENTER);
