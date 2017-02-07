@@ -1,4 +1,4 @@
-#TimePicker、DatePicker
+# TimePicker、DatePicker 
 
 时间和日期选择器
 
@@ -23,8 +23,6 @@
  - 更改选中字体大小
  - 更改宽度
  - 更新选中的背景图片
-
-
 
 获取选中的日期、时间
 ----------
@@ -55,19 +53,19 @@
 > 1.直接在布局文件中定义
 
 日期选择器
-
-    <com.nd.ent.widget.DatePicker
-        android:id="@+id/dp_picker"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
-
+```xml
+<com.nd.ent.widget.DatePicker
+    android:id="@+id/dp_picker"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"/>
+```    
 时间选择器
-
-    <com.nd.ent.widget.TimePicker
-        android:id="@+id/tp_picker"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
-
+```xml
+<com.nd.ent.widget.TimePicker
+    android:id="@+id/tp_picker"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"/>
+```
 > 2.直接在代码中创建相应的实例使用
 
 日期选择器 `DatePicker datePicker = new DatePicker(this);`
@@ -92,13 +90,13 @@
 
  - 默认字体大小
 `setItemSize(int pItemSize)`
-
+  
  - 选中的字体大小
 `setSelectedItemSize(int pSelectedItemSize)`
 
  - 默认字体颜色
 `setItemColor(@ColorInt int pItemColor)`
-
+ 
  - 选中的字体颜色
 
  `setSelectedColor(@ColorInt int pSelectedColor)`
@@ -110,11 +108,11 @@
  - 选中的背景图片
 
  `setCenterDrawableId(@DrawableRes int pCenterDrawableId)`
-
+ 
 
 > 2.XML中静态设置
 
-在布局根节点添加
+在布局根节点添加 
 `xmlns:picker="http://schemas.android.com/apk/res-auto"`
 
 通过下面属性进行设置
@@ -122,70 +120,104 @@
  - 日期选择器
 
     `picker:ent_picker_date_bg_color="#ffffff"` //背景色
+    
     `picker:ent_picker_date_center_drawable="@drawable/item_center_bg"` // 选中的背景图片
+    
     `picker:ent_picker_date_item_color="#ff0000"` //默认字体颜色
-
+    
     `picker:ent_picker_date_item_selected_color="#0000ff"` //选中字体颜色
-
+    
     `picker:ent_picker_date_item_size="@dimen/default_size"`//默认字体大小(必须在dimen文件中定义相应的值)
-
+    
     `picker:ent_picker_date_item_width="90dp"` //宽度
+    
     `picker:ent_picker_date_selected_item_size="@dimen/selected_size"`//选中字体大小(必须在dimen文件中定义相应的值)
+    
     `picker:ent_picker_date_visible_count="3"` //可见的选项数量
 
  - 时间选择器
 
     `picker:ent_picker_time_bg_color="#ffffff"` //背景色
+    
     `picker:ent_picker_time_center_drawable="@drawable/item_center_bg"` // 选中的背景图片
+    
     `picker:ent_picker_time_item_color="#ff0000"` //默认字体颜色
-
+    
     `picker:ent_picker_time_item_selected_color="#0000ff"` //选中字体颜色
-
+    
     `picker:ent_picker_time_item_size="@dimen/default_size"`//默认字体大小(必须在dimen文件中定义相应的值)
     
     `picker:ent_picker_time_item_width="90dp"` //宽度
+    
     `picker:ent_picker_time_selected_item_size="@dimen/selected_size"`//选中字体大小(必须在dimen文件中定义相应的值)
+    
     `picker:ent_picker_time_visible_count="3"` //可见的选项数量
 
 > 3.通过样式进行设置
 
  - 日期选择器
-`<com.nd.ent.widget.DatePicker
+```xml
+<com.nd.ent.widget.DatePicker 
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        style="@style/date_picker_style"
-        />`
+        style="@style/date_picker_style"/>
+```
+
+或在全局样式中使用
+
+```xml
+<style name="AppTheme1" parent="Theme.AppCompat.Light.DarkActionBar">
+    <!-- 指定全局样式. -->
+    <item name="ent_picker_dateStyle">@style/date_picker_style</item>
+</style>
+```
+
+如果同时使用了上面两种方式，优先使用style="@style/date_picker_style"
 
 date_picker_style样式参考
-
-    <style name="date_picker_style" parent="ent_picker_dateDefaultStyle">
-            <item name="ent_picker_date_item_color">#ff0000</item>
-            <item name="ent_picker_date_item_selected_color">#00ff00</item>
-            <item name="ent_picker_date_item_size">@dimen/date_picker_text_size</item>
-            <item name="ent_picker_date_selected_item_size">@dimen/date_picker_selected_text_size</item>
-            <item name="ent_picker_date_item_height">50sp</item>
-            <item name="ent_picker_date_visible_count">3</item>
-            <item name="ent_picker_date_center_drawable">@drawable/item_center_bg</item>
-        </style>
-
+```xml
+<style name="date_picker_style" parent="ent_picker_dateDefaultStyle">
+    <item name="ent_picker_date_item_color">#ff0000</item>
+    <item name="ent_picker_date_item_selected_color">#00ff00</item>
+    <item name="ent_picker_date_item_size">@dimen/date_picker_text_size</item>
+    <item name="ent_picker_date_selected_item_size">@dimen/date_picker_selected_text_size</item>
+    <item name="ent_picker_date_item_height">50sp</item>
+    <item name="ent_picker_date_visible_count">3</item>
+    <item name="ent_picker_date_center_drawable">@drawable/item_center_bg</item>
+</style>
+```
  - 时间选择器
- `<com.nd.ent.widget.TimePicker
+```xml
+<com.nd.ent.widget.TimePicker 
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        style="@style/time_picker_style"
-        />`
+        style="@style/time_picker_style" />
+```
+
+或在全局样式中使用
+
+```xml
+<style name="AppTheme1" parent="Theme.AppCompat.Light.DarkActionBar">
+    <!-- 指定全局样式. -->
+    <item name="ent_picker_timeStyle">@style/time_picker_style</item>
+</style>
+```
+
+如果同时使用了上面两种方式，优先使用style="@style/time_picker_style"
 
 time_picker_style样式参考
+```xml
+<style name="time_picker_style" parent="ent_picker_timeDefaultStyle">
+    <item name="ent_picker_time_item_color">#ff0000</item>
+    <item name="ent_picker_time_item_selected_color">#00ff00</item>
+    <item name="ent_picker_time_item_size">@dimen/time_picker_text_size</item>
+    <item name="ent_picker_time_selected_item_size">@dimen/time_picker_selected_text_size</item>
+    <item name="ent_picker_time_item_height">50sp</item>
+    <item name="ent_picker_time_visible_count">3</item>
+    <item name="ent_picker_time_center_drawable">@drawable/item_center_bg</item>
+</style>
+```
 
-    <style name="time_picker_style" parent="ent_picker_timeDefaultStyle">
-        <item name="ent_picker_time_item_color">#ff0000</item>
-        <item name="ent_picker_time_item_selected_color">#00ff00</item>
-        <item name="ent_picker_time_item_size">@dimen/time_picker_text_size</item>
-        <item name="ent_picker_time_selected_item_size">@dimen/time_picker_selected_text_size</item>
-        <item name="ent_picker_time_item_height">50sp</item>
-        <item name="ent_picker_time_visible_count">3</item>
-        <item name="ent_picker_time_center_drawable">@drawable/item_center_bg</item>
-    </style>
 本库依赖
 ----------
 
