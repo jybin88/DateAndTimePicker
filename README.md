@@ -68,9 +68,15 @@
 ```
 > 2.直接在代码中创建相应的实例使用
 
-日期选择器 `DatePicker datePicker = new DatePicker(this);`
+日期选择器 :
+```java
+DatePicker datePicker = new DatePicker(this);
+```
 
-时间选择器 `TimePicker timePicker = new TimePicker(this);`
+时间选择器:
+ ```java
+ TimePicker timePicker = new TimePicker(this);
+```
 
 属性设置：
 -----
@@ -85,37 +91,55 @@ setPickerBackground(Drawable pDrawable)
 ```
 
  - 设置可见的选项数量：
-`setVisibleItems(int pVisibleItems)`
+```java
+setVisibleItems(int pVisibleItems)
+```
 
  - 是否循环（只能动态进行设置，默认不循环）
-`setCycle(boolean pIsCycle)`
+```java
+setCycle(boolean pIsCycle)
+```
 
  - 默认字体大小
-`setItemSize(int pItemSize)`
+```java
+setItemSize(int pItemSize)
+```
   
  - 选中的字体大小
-`setSelectedItemSize(int pSelectedItemSize)`
+```java
+setSelectedItemSize(int pSelectedItemSize)
+```
 
  - 默认字体颜色
-`setItemColor(@ColorInt int pItemColor)`
+```java
+setItemColor(@ColorInt int pItemColor)
+```
  
  - 选中的字体颜色
 
- `setSelectedColor(@ColorInt int pSelectedColor)`
+```java
+setSelectedColor(@ColorInt int pSelectedColor)
+```
 
  - 宽度
 
- `setItemWidth(int pItemWidth)`
+```java
+setItemWidth(int pItemWidth)
+```
 
  - 选中的背景图片
 
- `setCenterDrawableId(@DrawableRes int pCenterDrawableId)`
+```java
+setCenterDrawableId(@DrawableRes int pCenterDrawableId)
+```
  
 
 > 2.XML中静态设置
 
 在布局根节点添加 
-`xmlns:picker="http://schemas.android.com/apk/res-auto"`
+```xml
+xmlns:picker="http://schemas.android.com/apk/res-auto"
+```
 
 通过下面属性进行设置
 
