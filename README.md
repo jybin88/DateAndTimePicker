@@ -78,9 +78,11 @@
 > 1.代码动态设置（日期选择器，时间选择器都使用下面的方法）
 
  - 设置背景色：
-`setPickerBackgroundColor(@ColorInt int pColor)`
-`setPickerBackgroundResource(@DrawableRes int pResId)`
-`setPickerBackground(Drawable pDrawable)`
+ ```java
+setPickerBackgroundColor(@ColorInt int pColor)
+setPickerBackgroundResource(@DrawableRes int pResId)`
+setPickerBackground(Drawable pDrawable)
+```
 
  - 设置可见的选项数量：
 `setVisibleItems(int pVisibleItems)`
