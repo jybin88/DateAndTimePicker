@@ -28,25 +28,25 @@
 ----------
 
 > 1.日期选择器
-
-    getDateString(); //返回格式为yyyy-MM-dd
-    getDateFormatString(String pDateFormat) //返回自定义格式(pDateFormat)的日期
-
+```java
+getDateString(); //返回格式为yyyy-MM-dd
+getDateFormatString(String pDateFormat) //返回自定义格式(pDateFormat)的日期
+```
 > 2.时间选择器
-
-    getTimeString(); //返回格式为HH:mm
-
+```java
+getTimeString(); //返回格式为HH:mm
+```
 显示任意日期、时间
 -----------
 
 > 日期选择器
-
-    setShowDate(int pYear, int pMonth, int pDay)
-
+```java
+setShowDate(int pYear, int pMonth, int pDay)
+```
 > 时间选择器
-
-    setShowTime(int pHour, int pMinute)
-
+```java
+setShowTime(int pHour, int pMinute)
+```
 使用方法：
 -----
 
@@ -75,7 +75,7 @@ DatePicker datePicker = new DatePicker(this);
 
 时间选择器:
  ```java
- TimePicker timePicker = new TimePicker(this);
+TimePicker timePicker = new TimePicker(this);
 ```
 
 属性设置：
@@ -144,41 +144,41 @@ xmlns:picker="http://schemas.android.com/apk/res-auto"
 通过下面属性进行设置
 
  - 日期选择器
+```java
+picker:ent_picker_date_bg_color="#ffffff" //背景色
 
-    `picker:ent_picker_date_bg_color="#ffffff"` //背景色
-    
-    `picker:ent_picker_date_center_drawable="@drawable/item_center_bg"` // 选中的背景图片
-    
-    `picker:ent_picker_date_item_color="#ff0000"` //默认字体颜色
-    
-    `picker:ent_picker_date_item_selected_color="#0000ff"` //选中字体颜色
-    
-    `picker:ent_picker_date_item_size="@dimen/default_size"`//默认字体大小(必须在dimen文件中定义相应的值)
-    
-    `picker:ent_picker_date_item_width="90dp"` //宽度
-    
-    `picker:ent_picker_date_selected_item_size="@dimen/selected_size"`//选中字体大小(必须在dimen文件中定义相应的值)
-    
-    `picker:ent_picker_date_visible_count="3"` //可见的选项数量
+picker:ent_picker_date_center_drawable="@drawable/item_center_bg" // 选中的背景图片
 
+picker:ent_picker_date_item_color="#ff0000" //默认字体颜色
+
+picker:ent_picker_date_item_selected_color="#0000ff" //选中字体颜色
+
+picker:ent_picker_date_item_size="@dimen/default_size" //默认字体大小(必须在dimen文件中定义相应的值)
+
+picker:ent_picker_date_item_width="90dp" //宽度
+
+picker:ent_picker_date_selected_item_size="@dimen/selected_size" //选中字体大小(必须在dimen文件中定义相应的值)
+
+picker:ent_picker_date_visible_count="3" //可见的选项数量
+```
  - 时间选择器
+```java
+picker:ent_picker_time_bg_color="#ffffff"  //背景色
 
-    `picker:ent_picker_time_bg_color="#ffffff"` //背景色
-    
-    `picker:ent_picker_time_center_drawable="@drawable/item_center_bg"` // 选中的背景图片
-    
-    `picker:ent_picker_time_item_color="#ff0000"` //默认字体颜色
-    
-    `picker:ent_picker_time_item_selected_color="#0000ff"` //选中字体颜色
-    
-    `picker:ent_picker_time_item_size="@dimen/default_size"`//默认字体大小(必须在dimen文件中定义相应的值)
-    
-    `picker:ent_picker_time_item_width="90dp"` //宽度
-    
-    `picker:ent_picker_time_selected_item_size="@dimen/selected_size"`//选中字体大小(必须在dimen文件中定义相应的值)
-    
-    `picker:ent_picker_time_visible_count="3"` //可见的选项数量
+picker:ent_picker_time_center_drawable="@drawable/item_center_bg" // 选中的背景图片
 
+picker:ent_picker_time_item_color="#ff0000" //默认字体颜色
+
+picker:ent_picker_time_item_selected_color="#0000ff" //选中字体颜色
+
+picker:ent_picker_time_item_size="@dimen/default_size" //默认字体大小(必须在dimen文件中定义相应的值)
+
+picker:ent_picker_time_item_width="90dp" //宽度
+
+picker:ent_picker_time_selected_item_size="@dimen/selected_size" //选中字体大小(必须在dimen文件中定义相应的值)
+
+picker:ent_picker_time_visible_count="3" //可见的选项数量
+```
 > 3.通过样式进行设置
 
  - 日期选择器
