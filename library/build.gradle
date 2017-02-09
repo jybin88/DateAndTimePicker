@@ -19,7 +19,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-    resourcePrefix("ent_wheel_") //
+    resourcePrefix("custom_picker_") //
 }
 
 dependencies {

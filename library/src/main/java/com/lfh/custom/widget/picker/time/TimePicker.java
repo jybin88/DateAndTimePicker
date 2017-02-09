@@ -1,4 +1,4 @@
-package com.lfh.custom.widget.time;
+package com.lfh.custom.widget.picker.time;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -14,8 +14,8 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import com.lfh.custom.widget.R;
-import com.lfh.custom.widget.wheel.WheelView;
-import com.lfh.custom.widget.wheel.adapter.NumericWheelAdapter;
+import com.lfh.custom.widget.picker.wheel.WheelView;
+import com.lfh.custom.widget.picker.wheel.adapter.NumericWheelAdapter;
 
 import java.util.Calendar;
 
@@ -83,7 +83,7 @@ public class TimePicker extends LinearLayout {
     }
 
     public TimePicker(Context context, AttributeSet attrs) {
-        this(context, attrs, R.attr.ent_picker_time_timeStyle);
+        this(context, attrs, R.attr.custom_picker_time_timeStyle);
     }
 
     public TimePicker(Context context, AttributeSet attrs, int defStyleAttr) {
@@ -94,17 +94,17 @@ public class TimePicker extends LinearLayout {
         // >直接在Theme中指定的值                     # 在对应的ThemeContext里的Theme内定义
 
         TypedArray a = context.obtainStyledAttributes(attrs, // LayoutInflater 传进来的值
-                R.styleable.ent_picker_time, // 自定义的 styleable，事实上是一个数组
+                R.styleable.custom_picker_time, // 自定义的 styleable，事实上是一个数组
                 defStyleAttr, // 主题里定义的 style
-                R.style.ent_picker_time_timeDefaultStyle); // 默认的 style
+                R.style.custom_picker_time_timeDefaultStyle); // 默认的 style
 
-        mItemColor = a.getColor(R.styleable.ent_picker_time_ent_picker_time_item_color, ContextCompat.getColor(context, R.color.ent_picker_default_color));
-        mSelectedColor = a.getColor(R.styleable.ent_picker_time_ent_picker_time_item_selected_color, ContextCompat.getColor(context, R.color.ent_picker_selected_color));
-        mItemSize = a.getDimensionPixelSize(R.styleable.ent_picker_time_ent_picker_time_item_size, context.getResources().getDimensionPixelSize(R.dimen.ent_picker_selected_text_size));
-        mSelectedItemSize = a.getDimensionPixelSize(R.styleable.ent_picker_time_ent_picker_time_selected_item_size, context.getResources().getDimensionPixelSize(R.dimen.ent_picker_selected_text_size));
-        mItemHeight = a.getDimensionPixelSize(R.styleable.ent_picker_time_ent_picker_time_item_height, context.getResources().getDimensionPixelSize(R.dimen.ent_picker_wheel_item_height));
-        mVisibleItems = a.getInt(R.styleable.ent_picker_time_ent_picker_time_visible_count, DEF_VISIBLE_ITEMS);
-        mCenterDrawableId = a.getResourceId(R.styleable.ent_picker_time_ent_picker_time_center_drawable, R.drawable.ent_wheel_wheelview_item_center_bg);
+        mItemColor = a.getColor(R.styleable.custom_picker_time_custom_picker_time_item_color, ContextCompat.getColor(context, R.color.custom_picker_default_color));
+        mSelectedColor = a.getColor(R.styleable.custom_picker_time_custom_picker_time_item_selected_color, ContextCompat.getColor(context, R.color.custom_picker_selected_color));
+        mItemSize = a.getDimensionPixelSize(R.styleable.custom_picker_time_custom_picker_time_item_size, context.getResources().getDimensionPixelSize(R.dimen.custom_picker_selected_text_size));
+        mSelectedItemSize = a.getDimensionPixelSize(R.styleable.custom_picker_time_custom_picker_time_selected_item_size, context.getResources().getDimensionPixelSize(R.dimen.custom_picker_selected_text_size));
+        mItemHeight = a.getDimensionPixelSize(R.styleable.custom_picker_time_custom_picker_time_item_height, context.getResources().getDimensionPixelSize(R.dimen.custom_picker_wheel_item_height));
+        mVisibleItems = a.getInt(R.styleable.custom_picker_time_custom_picker_time_visible_count, DEF_VISIBLE_ITEMS);
+        mCenterDrawableId = a.getResourceId(R.styleable.custom_picker_time_custom_picker_time_center_drawable, R.drawable.custom_picker_wheelview_item_center_bg);
 
         a.recycle();
 

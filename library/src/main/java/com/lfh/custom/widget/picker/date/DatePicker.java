@@ -1,4 +1,4 @@
-package com.lfh.custom.widget.date;
+package com.lfh.custom.widget.picker.date;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -15,9 +15,9 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import com.lfh.custom.widget.R;
-import com.lfh.custom.widget.wheel.WheelView;
-import com.lfh.custom.widget.wheel.adapter.NumericWheelAdapter;
-import com.lfh.custom.widget.wheel.listener.OnWheelChangedListener;
+import com.lfh.custom.widget.picker.wheel.WheelView;
+import com.lfh.custom.widget.picker.wheel.adapter.NumericWheelAdapter;
+import com.lfh.custom.widget.picker.wheel.listener.OnWheelChangedListener;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -95,7 +95,7 @@ public class DatePicker extends LinearLayout {
     }
 
     public DatePicker(Context context, AttributeSet attrs) {
-        this(context, attrs, R.attr.ent_picker_date_dateStyle);
+        this(context, attrs, R.attr.custom_picker_date_dateStyle);
     }
 
     public DatePicker(Context context, AttributeSet attrs, int defStyleAttr) {
@@ -106,17 +106,17 @@ public class DatePicker extends LinearLayout {
         // >直接在Theme中指定的值                     # 在对应的ThemeContext里的Theme内定义
 
         TypedArray a = context.obtainStyledAttributes(attrs, // LayoutInflater 传进来的值
-                R.styleable.ent_picker_date, // 自定义的 styleable，事实上是一个数组
+                R.styleable.custom_picker_date, // 自定义的 styleable，事实上是一个数组
                 defStyleAttr, // 主题里定义的 style
-                R.style.ent_picker_date_dateDefaultStyle); // 默认的 style
+                R.style.custom_picker_date_dateDefaultStyle); // 默认的 style
 
-        mItemColor = a.getColor(R.styleable.ent_picker_date_ent_picker_date_item_color, ContextCompat.getColor(context, R.color.ent_picker_default_color));
-        mSelectedColor = a.getColor(R.styleable.ent_picker_date_ent_picker_date_item_selector_color, ContextCompat.getColor(context, R.color.ent_picker_selected_color));
-        mItemSize = a.getDimensionPixelSize(R.styleable.ent_picker_date_ent_picker_date_item_size, context.getResources().getDimensionPixelSize(R.dimen.ent_picker_selected_text_size));
-        mSelectedItemSize = a.getDimensionPixelSize(R.styleable.ent_picker_date_ent_picker_date_selected_item_size, context.getResources().getDimensionPixelSize(R.dimen.ent_picker_selected_text_size));
-        mItemHeight = a.getDimensionPixelSize(R.styleable.ent_picker_date_ent_picker_date_item_height, context.getResources().getDimensionPixelSize(R.dimen.ent_picker_wheel_item_height));
-        mVisibleItems = a.getInt(R.styleable.ent_picker_date_ent_picker_date_visible_count, DEF_VISIBLE_ITEMS);
-        mCenterDrawableId = a.getResourceId(R.styleable.ent_picker_date_ent_picker_date_center_drawable, R.drawable.ent_wheel_wheelview_item_center_bg);
+        mItemColor = a.getColor(R.styleable.custom_picker_date_custom_picker_date_item_color, ContextCompat.getColor(context, R.color.custom_picker_default_color));
+        mSelectedColor = a.getColor(R.styleable.custom_picker_date_custom_picker_date_item_selector_color, ContextCompat.getColor(context, R.color.custom_picker_selected_color));
+        mItemSize = a.getDimensionPixelSize(R.styleable.custom_picker_date_custom_picker_date_item_size, context.getResources().getDimensionPixelSize(R.dimen.custom_picker_selected_text_size));
+        mSelectedItemSize = a.getDimensionPixelSize(R.styleable.custom_picker_date_custom_picker_date_selected_item_size, context.getResources().getDimensionPixelSize(R.dimen.custom_picker_selected_text_size));
+        mItemHeight = a.getDimensionPixelSize(R.styleable.custom_picker_date_custom_picker_date_item_height, context.getResources().getDimensionPixelSize(R.dimen.custom_picker_wheel_item_height));
+        mVisibleItems = a.getInt(R.styleable.custom_picker_date_custom_picker_date_visible_count, DEF_VISIBLE_ITEMS);
+        mCenterDrawableId = a.getResourceId(R.styleable.custom_picker_date_custom_picker_date_center_drawable, R.drawable.custom_picker_wheelview_item_center_bg);
 
         a.recycle();
 
@@ -172,18 +172,8 @@ public class DatePicker extends LinearLayout {
         mMonthWheel.setCenterDrawableId(mCenterDrawableId);
         mDayWheel.setCenterDrawableId(mCenterDrawableId);
 
-        mYearWheel.addChangingListener(new OnWheelChangedListener() {
-            @Override
-            public void onChanged(WheelView wheel, int oldValue, int newValue) {
-                updateMonthDays();//2月闰年29天，平年28天
-            }
-        });
-        mMonthWheel.addChangingListener(new OnWheelChangedListener() {
-            @Override
-            public void onChanged(WheelView wheel, int oldValue, int newValue) {
-                updateMonthDays();
-            }
-        });
+        mYearWheel.addChangingListener(mYearChangedListener);
+        mMonthWheel.addChangingListener(mMonthChangedListener);
 
         NumericWheelAdapter yearWheelAdapter = new NumericWheelAdapter(this.getContext(), DEFAULT_START_YEAR, DEFAULT_END_YEAR);
         NumericWheelAdapter monthWheelAdapter = new NumericWheelAdapter(this.getContext(), MIN_MONTH, MAX_MONTH);
@@ -197,6 +187,20 @@ public class DatePicker extends LinearLayout {
         mMonthWheel.setCurrentItem(mSelectedMonthIndex);
         mDayWheel.setCurrentItem(mSelectedDayIndex);
     }
+
+    OnWheelChangedListener mYearChangedListener = new OnWheelChangedListener() {
+        @Override
+        public void onChanged(WheelView wheel, int oldValue, int newValue) {
+            updateMonthDays();//2月闰年29天，平年28天
+        }
+    };
+
+    OnWheelChangedListener mMonthChangedListener = new OnWheelChangedListener() {
+        @Override
+        public void onChanged(WheelView wheel, int oldValue, int newValue) {
+            updateMonthDays();
+        }
+    };
 
     /**
      * 更新月份天数
@@ -469,8 +473,8 @@ public class DatePicker extends LinearLayout {
      * 移除监听器
      * 在Activity onDestroy()调用，避免内存泄露
      */
-    public void removeListener() {
-        mYearWheel.removeChangingListener(yearChangedListener);
-        mMonthWheel.removeChangingListener(monthChangedListener);
+    public void removeWheelChangedListener() {
+        mYearWheel.removeChangingListener(mYearChangedListener);
+        mMonthWheel.removeChangingListener(mMonthChangedListener);
     }
 }

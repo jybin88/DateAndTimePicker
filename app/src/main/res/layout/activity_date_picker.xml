@@ -4,7 +4,7 @@
               android:layout_height="match_parent"
               android:orientation="vertical">
 
-    <com.lfh.custom.widget.date.DatePicker
+    <com.lfh.custom.widget.picker.date.DatePicker
         android:id="@+id/dp_picker"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>

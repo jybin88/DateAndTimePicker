@@ -8,7 +8,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.TextView;
 
-import com.lfh.custom.widget.time.TimePicker;
+import com.lfh.custom.widget.picker.time.TimePicker;
 
 
 /**

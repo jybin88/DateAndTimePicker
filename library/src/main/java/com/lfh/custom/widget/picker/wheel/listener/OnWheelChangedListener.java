@@ -1,7 +1,7 @@
-package com.lfh.custom.widget.wheel.listener;
+package com.lfh.custom.widget.picker.wheel.listener;
 
 
-import com.lfh.custom.widget.wheel.WheelView;
+import com.lfh.custom.widget.picker.wheel.WheelView;
 
 /**
  * Wheel changed listener interface.

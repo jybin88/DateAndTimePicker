@@ -1,4 +1,4 @@
-package com.lfh.custom.widget.wheel.adapter;
+package com.lfh.custom.widget.picker.wheel.adapter;
 
 import android.content.Context;
 import android.text.TextUtils;
@@ -314,7 +314,7 @@ public abstract class AbstractWheelTextAdapter extends AbstractWheelAdapter {
                 return null;
             case TEXT_VIEW_ITEM_RESOURCE:
                 TextView textView = new TextView(context);
-                int padding = context.getResources().getDimensionPixelOffset(R.dimen.ent_wheel_common_def_text_padding);
+                int padding = context.getResources().getDimensionPixelOffset(R.dimen.custom_picker_wheel_text_padding);
                 textView.setPadding(0, padding, 0, padding);
                 if (itemHeight > 0) {
                     LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, itemHeight);

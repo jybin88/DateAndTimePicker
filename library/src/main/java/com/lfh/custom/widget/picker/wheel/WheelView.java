@@ -1,6 +1,5 @@
-package com.lfh.custom.widget.wheel;
+package com.lfh.custom.widget.picker.wheel;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.database.DataSetObserver;
@@ -20,11 +19,11 @@ import android.view.animation.Interpolator;
 import android.widget.LinearLayout;
 
 import com.lfh.custom.widget.R;
-import com.lfh.custom.widget.wheel.WheelScroller.ScrollingListener;
-import com.lfh.custom.widget.wheel.adapter.WheelViewAdapter;
-import com.lfh.custom.widget.wheel.listener.OnWheelChangedListener;
-import com.lfh.custom.widget.wheel.listener.OnWheelClickedListener;
-import com.lfh.custom.widget.wheel.listener.OnWheelScrollListener;
+import com.lfh.custom.widget.picker.wheel.WheelScroller.ScrollingListener;
+import com.lfh.custom.widget.picker.wheel.adapter.WheelViewAdapter;
+import com.lfh.custom.widget.picker.wheel.listener.OnWheelChangedListener;
+import com.lfh.custom.widget.picker.wheel.listener.OnWheelClickedListener;
+import com.lfh.custom.widget.picker.wheel.listener.OnWheelScrollListener;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -116,7 +115,7 @@ public class WheelView extends View {
     }
 
     public WheelView(Context context, AttributeSet attrs) {
-        this(context, attrs, R.attr.ent_picker_wheel_wheelStyle);
+        this(context, attrs, R.attr.custom_picker_wheel_wheelStyle);
     }
 
     public WheelView(Context context, AttributeSet attrs, int defStyle) {
@@ -127,18 +126,18 @@ public class WheelView extends View {
         // >直接在Theme中指定的值                     # 在对应的ThemeContext里的Theme内定义
 
         TypedArray a = context.obtainStyledAttributes(attrs, // LayoutInflater 传进来的值
-                R.styleable.ent_picker_wheel, // 自定义的 styleable，事实上是一个数组
+                R.styleable.custom_picker_wheel, // 自定义的 styleable，事实上是一个数组
                 defStyle, // 主题里定义的 style
-                R.style.ent_picker_wheel_wheelDefaultStyle); // 默认的 style
+                R.style.custom_picker_wheel_wheelDefaultStyle); // 默认的 style
 
-        wheelItemColor = a.getColor(R.styleable.ent_picker_wheel_ent_picker_wheel_item_color, ContextCompat.getColor(context, R.color.ent_picker_default_color));
-        wheelSelectedColor = a.getColor(R.styleable.ent_picker_wheel_ent_picker_wheelSelectedColor, ContextCompat.getColor(context, R.color.ent_picker_selected_color));
-        wheelItemSize = a.getDimensionPixelSize(R.styleable.ent_picker_wheel_ent_picker_wheel_item_size, context.getResources().getDimensionPixelSize(R.dimen.ent_picker_selected_text_size));
-        wheelSelectedItemSize = a.getDimensionPixelSize(R.styleable.ent_picker_wheel_ent_picker_wheel_selected_item_size, context.getResources().getDimensionPixelSize(R.dimen.ent_picker_selected_text_size));
-        wheelItemHeight = a.getDimensionPixelSize(R.styleable.ent_picker_wheel_ent_picker_wheel_item_height, context.getResources().getDimensionPixelSize(R.dimen.ent_picker_wheel_item_height));
-        visibleItems = a.getInt(R.styleable.ent_picker_wheel_ent_picker_wheel_visible_count, DEF_VISIBLE_ITEMS);
-        centerDrawableId = a.getResourceId(R.styleable.ent_picker_wheel_ent_picker_wheel_center_drawable, R.drawable.ent_wheel_wheelview_item_center_bg);
-        contentPadding = a.getDimensionPixelSize(R.styleable.ent_picker_wheel_ent_picker_wheel_content_padding, 0);
+        wheelItemColor = a.getColor(R.styleable.custom_picker_wheel_custom_picker_wheel_item_color, ContextCompat.getColor(context, R.color.custom_picker_default_color));
+        wheelSelectedColor = a.getColor(R.styleable.custom_picker_wheel_custom_picker_wheelSelectedColor, ContextCompat.getColor(context, R.color.custom_picker_selected_color));
+        wheelItemSize = a.getDimensionPixelSize(R.styleable.custom_picker_wheel_custom_picker_wheel_item_size, context.getResources().getDimensionPixelSize(R.dimen.custom_picker_selected_text_size));
+        wheelSelectedItemSize = a.getDimensionPixelSize(R.styleable.custom_picker_wheel_custom_picker_wheel_selected_item_size, context.getResources().getDimensionPixelSize(R.dimen.custom_picker_selected_text_size));
+        wheelItemHeight = a.getDimensionPixelSize(R.styleable.custom_picker_wheel_custom_picker_wheel_item_height, context.getResources().getDimensionPixelSize(R.dimen.custom_picker_wheel_item_height));
+        visibleItems = a.getInt(R.styleable.custom_picker_wheel_custom_picker_wheel_visible_count, DEF_VISIBLE_ITEMS);
+        centerDrawableId = a.getResourceId(R.styleable.custom_picker_wheel_custom_picker_wheel_center_drawable, R.drawable.custom_picker_wheelview_item_center_bg);
+        contentPadding = a.getDimensionPixelSize(R.styleable.custom_picker_wheel_custom_picker_wheel_content_padding, 0);
         centerDrawable = ContextCompat.getDrawable(context, centerDrawableId);
 
         a.recycle();
@@ -755,7 +754,7 @@ public class WheelView extends View {
         int center = getHeight() / 2 + 2;
         int offset = getItemHeight() / 2;
         if (centerDrawable == null) {
-            centerDrawable = ContextCompat.getDrawable(getContext(), R.drawable.ent_wheel_wheelview_item_center_bg);
+            centerDrawable = ContextCompat.getDrawable(getContext(), R.drawable.custom_picker_wheelview_item_center_bg);
         }
         centerDrawable.setBounds(contentPadding, center - offset, getWidth() - contentPadding, center + offset);
         centerDrawable.draw(canvas);
