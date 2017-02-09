@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="27dp"
+    android:layout_gravity="center"
+    android:orientation="horizontal">
+
+    <RadioButton
+        android:id="@+id/rb_gregorian"
+        android:layout_width="60dp"
+        android:layout_height="match_parent"
+        android:background="@drawable/custom_picker_btn_gregorian_focus"
+        android:button="@null"
+        android:checked="true"
+        android:gravity="center"
+        android:maxLines="1"
+        android:text="@string/ent_picker_gregorian"
+        android:textColor="@color/ent_picker_color7"
+        android:textSize="@dimen/ent_picker_fontsize13"/>
+
+    <RadioButton
+        android:id="@+id/rb_lunar"
+        android:layout_width="60dp"
+        android:layout_height="match_parent"
+        android:background="@drawable/custom_picker_btn_lunar_normal"
+        android:button="@null"
+        android:checked="false"
+        android:gravity="center"
+        android:maxLines="1"
+        android:text="@string/ent_picker_lunar"
+        android:textColor="@color/ent_picker_color14"
+        android:textSize="@dimen/ent_picker_fontsize13"/>
+</LinearLayout>

@@ -2,4 +2,9 @@
 <resources>
     <color name="custom_picker_default_color">#999999</color>
     <color name="custom_picker_selected_color">#333333</color>
+
+    <color name="custom_picker_color1">#333333</color>
+    <color name="custom_picker_color4">#999999</color>
+    <color name="custom_picker_color14">#38adff</color>
+    <color name="custom_picker_color7">#ffffff</color>
 </resources>

@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="custom_picker_on_change" type="id"/>
+    <item name="custom_picker_on_change_debounce" type="id"/>
+</resources>

@@ -19,26 +19,40 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import com.lfh.custom.widget.R;
+import com.lfh.custom.widget.picker.calendar.CalendarUtil;
+import com.lfh.custom.widget.picker.calendar.ChineseCalendar;
 import com.lfh.custom.widget.picker.wheel.WheelView;
-import com.lfh.custom.widget.picker.wheel.adapter.NumericWheelAdapter;
+import com.lfh.custom.widget.picker.wheel.adapter.TextWheelAdapter;
 import com.lfh.custom.widget.picker.wheel.listener.OnWheelChangedListener;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Locale;
 
 /**
- * 日期选择器
- * Created by Administrator on 2017/1/16 0016.
+ * 中国式日期选择
+ * Created by lifuhai on 2017/2/8 0008.
  */
-public class DatePicker extends LinearLayout {
+@SuppressWarnings("WrongConstant")
+public class ChineseDatePicker extends LinearLayout {
     private static final String DEFAULT_DATE_FORMAT = "yyyy-MM-dd";//默认时间格式化
-    private static final int DEFAULT_START_YEAR = 1900;//默认开始的时间
-    private static final int DEFAULT_END_YEAR = 2100;//默认结束时间
-    private static final int MIN_DAY = 1;
-    private static final int MIN_MONTH = 1;
-    private static final int MAX_MONTH = 12;
+    private static final int YEAR_START = 1900; //起始年份
+    private static final int YEAR_END = 2100; //结束年份
+    private static final int YEAR_SPAN = YEAR_END - YEAR_START + 1;
+
+    private static final int MONTH_START = 1; //起始月份
+    private static final int MONTH_END = 12; //结束月份
+    private static final int MONTY_SPAN = MONTH_END - MONTH_START + 1;
+
+    private static final int DAY_START = 1; //起始天数
+    /**
+     * 是否公历  true 公历, false 农历
+     */
+    private boolean mIsGregorian = false;
     /**
      * Default count of visible items
      */
@@ -92,22 +106,31 @@ public class DatePicker extends LinearLayout {
     private WheelView mMonthWheel;
     private WheelView mDayWheel;
 
-    private NumericWheelAdapter mDayWheelAdapter;
-
     private int mSelectedYearIndex;
     private int mSelectedMonthIndex;
     private int mSelectedDayIndex;
     private HashSet<OnDateChangeListener> mOnDateChangeListeners = new HashSet<>();
 
-    public DatePicker(Context context) {
+    private String[] mArrGregorianYear = new String[YEAR_SPAN]; //公历年份
+    private String[] mArrLunarYear = new String[YEAR_SPAN];//农历年份
+    private String[] mArrGregorianMonth = new String[MONTY_SPAN]; //公历月份
+    private String[] mArrLunarMonth = new String[MONTY_SPAN]; //农历月份
+
+    private ChineseCalendar mChineseCalendar;
+
+    private TextWheelAdapter mYearWheelAdapter;
+    private TextWheelAdapter mMonthWheelAdapter;
+    private TextWheelAdapter mDayWheelAdapter;
+
+    public ChineseDatePicker(Context context) {
         this(context, null);
     }
 
-    public DatePicker(Context context, AttributeSet attrs) {
+    public ChineseDatePicker(Context context, AttributeSet attrs) {
         this(context, attrs, R.attr.custom_picker_dateStyle);
     }
 
-    public DatePicker(Context context, AttributeSet attrs, int defStyleAttr) {
+    public ChineseDatePicker(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         // 直接在XML中定义 > style定义                # 在layout.xml内直接写
         // >由defStyleAttr                          # 在对应的ThemeContext里的Theme内定义
@@ -134,17 +157,16 @@ public class DatePicker extends LinearLayout {
         setOrientation(HORIZONTAL);
         setGravity(Gravity.CENTER);
         initWheelData();
-        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(mItemWidth, ViewGroup.LayoutParams.WRAP_CONTENT);
+        LayoutParams lp = new LayoutParams(mItemWidth, ViewGroup.LayoutParams.WRAP_CONTENT);
         lp.leftMargin = 10;
         this.addView(mYearWheel, lp);
         this.addView(mMonthWheel, lp);
         this.addView(mDayWheel, lp);
     }
 
-    /**
-     * 初始化年、月、日数据
-     */
     private void initWheelData() {
+        initYearData();
+        initMonthData();
         initCurrentDate();
         mYearWheel = new WheelView(this.getContext());
         mMonthWheel = new WheelView(this.getContext());
@@ -185,41 +207,38 @@ public class DatePicker extends LinearLayout {
         mYearWheel.setWheelBackgroundColor(mBackgroundColor);
         mMonthWheel.setWheelBackgroundColor(mBackgroundColor);
         mDayWheel.setWheelBackgroundColor(mBackgroundColor);
+        //set listener
+        mYearWheel.addChangingListener(mYearWheelChangedListener);
+        mMonthWheel.addChangingListener(mMonthWheelChangedListener);
+        mDayWheel.addChangingListener(mDayWheelChangedListener);
 
-        mYearWheel.addChangingListener(mYearChangedListener);
-        mMonthWheel.addChangingListener(mMonthChangedListener);
-        mDayWheel.addChangingListener(mDayChangedListener);
-
-        NumericWheelAdapter yearWheelAdapter = new NumericWheelAdapter(this.getContext(), DEFAULT_START_YEAR, DEFAULT_END_YEAR);
-        NumericWheelAdapter monthWheelAdapter = new NumericWheelAdapter(this.getContext(), MIN_MONTH, MAX_MONTH);
-        mDayWheelAdapter = new NumericWheelAdapter(this.getContext(), MIN_DAY, mMaxDayByMonth);
-        mYearWheel.setViewAdapter(yearWheelAdapter);
-        mMonthWheel.setViewAdapter(monthWheelAdapter);
-        mDayWheel.setViewAdapter(mDayWheelAdapter);
+        //init adapter
+        mYearWheelAdapter = new TextWheelAdapter(getContext());
+        mMonthWheelAdapter = new TextWheelAdapter(getContext());
+        mDayWheelAdapter = new TextWheelAdapter(getContext());
+        setAdapter();
 
         //默认显示当前的日期
-        mYearWheel.setCurrentItem(mSelectedYearIndex);
-        mMonthWheel.setCurrentItem(mSelectedMonthIndex);
-        mDayWheel.setCurrentItem(mSelectedDayIndex);
+        showDate();
     }
 
-    OnWheelChangedListener mYearChangedListener = new OnWheelChangedListener() {
+    private OnWheelChangedListener mYearWheelChangedListener = new OnWheelChangedListener() {
         @Override
         public void onChanged(WheelView wheel, int oldValue, int newValue) {
-            updateMonthDays();//2月闰年29天，平年28天
+            updateCalendarData();
             onDateChange();
         }
     };
 
-    OnWheelChangedListener mMonthChangedListener = new OnWheelChangedListener() {
+    private OnWheelChangedListener mMonthWheelChangedListener = new OnWheelChangedListener() {
         @Override
         public void onChanged(WheelView wheel, int oldValue, int newValue) {
-            updateMonthDays();
+            updateCalendarData();
             onDateChange();
         }
     };
 
-    private OnWheelChangedListener mDayChangedListener = new OnWheelChangedListener() {
+    private OnWheelChangedListener mDayWheelChangedListener = new OnWheelChangedListener() {
         @Override
         public void onChanged(WheelView wheel, int oldValue, int newValue) {
             onDateChange();
@@ -231,64 +250,234 @@ public class DatePicker extends LinearLayout {
     }
 
     /**
-     * 更新月份天数
+     * 设置适配器
      */
-    private void updateMonthDays() {
-        int finalDayIndex = mDayWheel.getCurrentItem();//天数最后选中的索引位置
-        mMaxDayByMonth = getDaysByYearMonth(getYearValue(), mMonthWheel.getCurrentItem());
-
-        if (finalDayIndex >= mMaxDayByMonth) {
-            finalDayIndex = mMaxDayByMonth - 1;
-        }
-
-        mDayWheelAdapter.changeData(MIN_DAY, mMaxDayByMonth);
-        mDayWheel.setCurrentItem(finalDayIndex);//默认位置为最后选中的位置
+    private void setAdapter() {
+        //set data
+        mYearWheelAdapter.setData(stringArrayToList(getYearData()));
+        mMonthWheelAdapter.setData(stringArrayToList(getMonthData()));
+        mDayWheelAdapter.setData(stringArrayToList(getDayData()));
+        //set adapter
+        mYearWheel.setViewAdapter(mYearWheelAdapter);
+        mMonthWheel.setViewAdapter(mMonthWheelAdapter);
+        mDayWheel.setViewAdapter(mDayWheelAdapter);
     }
 
     /**
      * 初始化当前日期
      */
     private void initCurrentDate() {
-        Calendar calendar = Calendar.getInstance();
-        int year = calendar.get(Calendar.YEAR);
-        int month = calendar.get(Calendar.MONTH);
-        mSelectedYearIndex = year - DEFAULT_START_YEAR;
-        mSelectedMonthIndex = month;
-        mSelectedDayIndex = calendar.get(Calendar.DAY_OF_MONTH) - 1;
-        mMaxDayByMonth = getDaysByYearMonth(year, month);
+        mChineseCalendar = new ChineseCalendar(Calendar.getInstance());
+        updateYearMonthDayIndex();
     }
 
     /**
-     * 根据年、月获取月份天数
-     *
-     * @param pYear  年份
-     * @param pMonth 月份
-     * @return 月份总天数
+     * 初始化农历年份
      */
-    private int getDaysByYearMonth(int pYear, int pMonth) {
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.YEAR, pYear);
-        calendar.set(Calendar.MONTH, pMonth);
-        calendar.set(Calendar.DATE, 1);
-        calendar.roll(Calendar.DATE, -1);
-
-        return calendar.get(Calendar.DATE);
+    private void initYearData() {
+        for (int i = 0; i < YEAR_SPAN; i++) {
+            mArrGregorianYear[i] = String.valueOf(YEAR_START + i);
+            mArrLunarYear[i] = String.format(getContext().getString(R.string.custom_picker_year_format), String.valueOf(YEAR_START + i));
+//            mArrLunarYear[i] = CalendarUtil.getLunarNameOfYear(YEAR_START + i);
+        }
     }
 
     /**
-     * Set show date
+     * 获取月份数据
      *
-     * @param pYear  year
-     * @param pMonth month
-     * @param pDay   day
+     * @return 月份数据
      */
-    public void setShowDate(int pYear, int pMonth, int pDay) {
-        mSelectedYearIndex = pYear - DEFAULT_START_YEAR;
-        mSelectedMonthIndex = pMonth - 1;
-        mSelectedDayIndex = pDay - 1;
+    private String[] getYearData() {
+        return mIsGregorian ? mArrGregorianYear : mArrLunarYear;
+    }
+
+    /**
+     * 初始化默认的月份数据(1-12个月)
+     */
+    private void initMonthData() {
+        mArrGregorianMonth = getResources().getStringArray(R.array.custom_picker_month_array); //公历默认月份
+
+        for (int i = 0; i < MONTY_SPAN; i++) {
+            //农历默认月份
+            mArrLunarMonth[i] = CalendarUtil.getLunarNameOfMonth(MONTH_START + i);
+        }
+    }
+
+    /**
+     * 根据年的月总数
+     *
+     * @param year 年份
+     * @return 月总数
+     */
+    private int getMonthCount(int year) {
+        if (mIsGregorian) {
+            return mArrGregorianMonth.length;
+        } else {
+            int monthLeap = CalendarUtil.getMonthLeapByYear(year);
+
+            if (0 == monthLeap) { //没有闰月
+                return mArrLunarMonth.length;
+            } else { //有闰月重新获取数据
+                return CalendarUtil.getLunarMonthsNamesWithLeap(monthLeap).length;
+            }
+        }
+    }
+
+    /**
+     * 获取月份数据，农历月份可能包含闰月
+     *
+     * @return 月份数据
+     */
+    private String[] getMonthData() {
+        String[] newMonthData;//新月份数据
+
+        if (mIsGregorian) {
+            newMonthData = mArrGregorianMonth;
+        } else {
+            int monthLeap = CalendarUtil.getMonthLeapByYear(mChineseCalendar.get(ChineseCalendar.CHINESE_YEAR));
+
+            if (0 == monthLeap) { //没有闰月
+                newMonthData = mArrLunarMonth;
+            } else { //有闰月重新获取数据
+                newMonthData = CalendarUtil.getLunarMonthsNamesWithLeap(monthLeap);
+            }
+        }
+
+        return newMonthData;
+    }
+
+    /**
+     * 获取每月最大天数
+     *
+     * @return 最大天数
+     */
+    private int getDaysByYearMonth() {
+        int days;
+
+        if (mIsGregorian) { //公历
+            days = CalendarUtil.getSumOfDayInMonthForGregorianByMonth(mChineseCalendar.get(ChineseCalendar.CHINESE_YEAR), mChineseCalendar.get(ChineseCalendar.CHINESE_MONTH));
+        } else { //农历
+            days = CalendarUtil.getSumOfDayInMonthForLunarByMonthLunar(mChineseCalendar.get(ChineseCalendar.CHINESE_YEAR), mChineseCalendar.get(ChineseCalendar.CHINESE_MONTH));
+        }
+
+        return days;
+    }
+
+    /**
+     * 获取天数数据
+     *
+     * @return 天数
+     */
+    private String[] getDayData() {
+        mMaxDayByMonth = getDaysByYearMonth();
+        int daySpan = mMaxDayByMonth - DAY_START + 1;
+        String[] dayData = new String[daySpan];
+
+        for (int i = 0; i < daySpan; i++) {
+            if (mIsGregorian) { //公历
+                dayData[i] = String.format(getContext().getString(R.string.custom_picker_day_format), String.valueOf(DAY_START + i));
+            } else { //农历
+                dayData[i] = CalendarUtil.getLunarNameOfDay(DAY_START + i);
+            }
+        }
+
+        return dayData;
+    }
+
+    /**
+     * 更新日历数据
+     *
+     * @param pYear        年
+     * @param pMonthSway   月，公历农历均从1开始。农历如果有闰月，按照实际的顺序添加
+     * @param pDay         日，从1开始，日期在月份中的显示数值
+     * @param pIsGregorian 是否公历 true 公历 false 农历
+     */
+    private void updateChineseCalendar(int pYear, int pMonthSway, int pDay, boolean pIsGregorian) {
+        if (pIsGregorian) { //公历
+            mChineseCalendar = new ChineseCalendar(pYear, pMonthSway - 1, pDay); //公历日期构造方法
+        } else { //农历
+            int month = CalendarUtil.convertMonthSwayToMonthLunarByYear(pMonthSway, pYear);
+            mChineseCalendar = new ChineseCalendar(true, pYear, month, pDay);
+        }
+    }
+
+    /**
+     * 切换公历、农历
+     *
+     * @param pIsGregorian true 公历 false 农历
+     */
+    public void showGregorian(boolean pIsGregorian) {
+        updateChineseCalendar(getYearValue(), mMonthWheel.getCurrentItem() + 1, mDayWheel.getCurrentItem() + 1, mIsGregorian);
+        mIsGregorian = pIsGregorian;
+        setAdapter();
+        updateYearMonthDayIndex();
+        //默认显示选中的日期
+        showDate();
+    }
+
+    /**
+     * 更新年、月、日游标、月份天数
+     */
+    private void updateYearMonthDayIndex() {
+        mSelectedYearIndex = mChineseCalendar.get(ChineseCalendar.YEAR) - YEAR_START;
+
+        if (mIsGregorian) { //公历
+            mSelectedMonthIndex = mChineseCalendar.get(ChineseCalendar.MONTH);
+            mSelectedDayIndex = mChineseCalendar.get(ChineseCalendar.DAY_OF_MONTH) - 1;
+        } else { //农历
+            int monthLeap = CalendarUtil.getMonthLeapByYear(mChineseCalendar.get(ChineseCalendar.CHINESE_YEAR));
+
+            if (monthLeap == 0) {
+                mSelectedMonthIndex = mChineseCalendar.get(ChineseCalendar.CHINESE_MONTH) - 1;
+            } else {
+                mSelectedMonthIndex = CalendarUtil.convertMonthLunarToMonthSway(mChineseCalendar.get(ChineseCalendar.CHINESE_MONTH), monthLeap) - 1;
+            }
+
+            mSelectedDayIndex = mChineseCalendar.get(ChineseCalendar.CHINESE_DATE) - 1;
+        }
+
+        mMaxDayByMonth = getDaysByYearMonth();
+    }
+
+    /**
+     * 显示日期
+     */
+    private void showDate() {
         mYearWheel.setCurrentItem(mSelectedYearIndex);
         mMonthWheel.setCurrentItem(mSelectedMonthIndex);
         mDayWheel.setCurrentItem(mSelectedDayIndex);
+    }
+
+    private int getYearValue() {
+        return mYearWheel.getCurrentItem() + YEAR_START;
+    }
+
+    /**
+     * 获取年份字符串
+     *
+     * @return 年份字符串
+     */
+    private String getYearString() {
+        int index = mYearWheel.getCurrentItem();
+
+        return mYearWheelAdapter.getItemText(index).toString();
+    }
+
+    /**
+     * 获取月份字符串
+     *
+     * @return 月份字符串
+     */
+    private String getMonthString() {
+        int index = mMonthWheel.getCurrentItem();
+
+        return mMonthWheelAdapter.getItemText(index).toString();
+    }
+
+    private String getDayString() {
+        int index = mDayWheel.getCurrentItem();
+
+        return mDayWheelAdapter.getItemText(index).toString();
     }
 
     /**
@@ -314,16 +503,93 @@ public class DatePicker extends LinearLayout {
             formatString = pDateFormat;
         }
 
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.YEAR, getYearValue());
-        calendar.set(Calendar.MONTH, mMonthWheel.getCurrentItem());
-        calendar.set(Calendar.DATE, mDayWheel.getCurrentItem() + 1);
+        int year = getYearValue();
+        int month = mMonthWheel.getCurrentItem();
+        int day = mDayWheel.getCurrentItem() + 1;
+        ChineseCalendar chineseCalendar = new ChineseCalendar(year, month, day);
 
-        return new SimpleDateFormat(formatString, Locale.CHINA).format(calendar.getTime());
+        return new SimpleDateFormat(formatString, Locale.CHINESE).format(chineseCalendar.getTime());
     }
 
-    private int getYearValue() {
-        return mYearWheel.getCurrentItem() + DEFAULT_START_YEAR;
+
+    /**
+     * 设置公历日期
+     * <p>
+     * 设置农历用setLunarDate(int pYear, int pMonth, int pDay)
+     *
+     * @param pYear  year
+     * @param pMonth month
+     * @param pDay   day
+     */
+    public void setGregorianDate(int pYear, int pMonth, int pDay) {
+        updateChineseCalendar(pYear, pMonth, pDay, true);
+        updateYearMonthDayIndex();
+        //显示选择的日期
+        showDate();
+    }
+
+    /**
+     * 设置农历日期
+     * <p>
+     * 设置公历用setGregorianDate(int pYear, int pMonth, int pDay)
+     *
+     * @param pYear  year
+     * @param pMonth month
+     * @param pDay   day
+     */
+    public void setLunarDate(int pYear, int pMonth, int pDay) {
+        int monthLeap = Math.abs(CalendarUtil.getMonthLeapByYear(pYear)); //获取年份的闰月，没有闰月值为0
+
+        if (monthLeap < pYear) { //如果闰月比传入的月份小，传入月份加1才是正确月份
+            pMonth = pMonth + 1;
+        }
+
+        updateChineseCalendar(pYear, pMonth, pDay, false);
+        updateYearMonthDayIndex();
+        //显示选择的日期
+        showDate();
+    }
+
+    /**
+     * 更新日历数据
+     */
+    private void updateCalendarData() {
+        int finalMonthIndex = mMonthWheel.getCurrentItem(); //上次月份选中的位置
+        int finalDayIndex = mDayWheel.getCurrentItem(); //上次日期选中的位置
+        int year = mYearWheel.getCurrentItem() + YEAR_START; //选中的年
+        int monthCount = getMonthCount(year); //重新获取月份总数，农历可能有闰月
+
+        if (finalMonthIndex >= monthCount) {
+            //上次选中为最后一个月份，且月份总数大于当前选中的年，当前最后一个月份需要减1
+            finalMonthIndex = monthCount - 1;
+        }
+
+        int month = finalMonthIndex + 1; //选中的月份
+        int day = mDayWheel.getCurrentItem() + 1;
+        updateChineseCalendar(year, month, day, mIsGregorian);
+        mMaxDayByMonth = getDaysByYearMonth(); //总天数
+
+        if (finalDayIndex >= mMaxDayByMonth) {
+            //上次选中的为月的最后一天，且天数大于当前选中的月的天数，当前最后的天数需要减1
+            finalDayIndex = mMaxDayByMonth - 1;
+        }
+
+        setAdapter();
+        mMonthWheel.setCurrentItem(finalMonthIndex);
+        mDayWheel.setCurrentItem(finalDayIndex);
+    }
+
+    /**
+     * String数组转List
+     *
+     * @param pArray String数组
+     * @return List
+     */
+    private List<String> stringArrayToList(String[] pArray) {
+        List<String> strings = new ArrayList<>();
+        Collections.addAll(strings, pArray);
+
+        return strings;
     }
 
     /**
@@ -486,17 +752,17 @@ public class DatePicker extends LinearLayout {
      * 移除监听
      */
     public void removeWheelChangedListener() {
-        mYearWheel.removeChangingListener(mYearChangedListener);
-        mMonthWheel.removeChangingListener(mMonthChangedListener);
-        mDayWheel.removeChangingListener(mDayChangedListener);
+        mYearWheel.removeChangingListener(mYearWheelChangedListener);
+        mMonthWheel.removeChangingListener(mMonthWheelChangedListener);
+        mDayWheel.removeChangingListener(mDayWheelChangedListener);
     }
 
     private Handler mDebounceHandler = new Handler(Looper.getMainLooper()) {
         @Override
         public void handleMessage(Message msg) {
             if (msg.what == R.id.custom_picker_on_change) {
-                for (OnDateChangeListener nextListener : mOnDateChangeListeners) {
-                    nextListener.onChange((Calendar) msg.obj);
+                for (ChineseDatePicker.OnDateChangeListener nextListener : mOnDateChangeListeners) {
+                    nextListener.onChange((Calendar) msg.obj, getYearString(), getMonthString(), getDayString());
                 }
             } else if (msg.what == R.id.custom_picker_on_change_debounce) {
                 // 防止当快速滑动时会快速调用回调的问题
@@ -519,17 +785,17 @@ public class DatePicker extends LinearLayout {
         mDebounceHandler.sendMessage(message);
     }
 
-    public void addOnDateChangeListener(OnDateChangeListener listener) {
+    public void addOnDateChangeListener(ChineseDatePicker.OnDateChangeListener listener) {
         if (listener == null) return;
         mOnDateChangeListeners.add(listener);
     }
 
-    public void removeOnDateChangeListener(OnDateChangeListener listener) {
+    public void removeOnDateChangeListener(ChineseDatePicker.OnDateChangeListener listener) {
         if (listener == null) return;
         mOnDateChangeListeners.remove(listener);
     }
 
     public interface OnDateChangeListener {
-        void onChange(Calendar date);
+        void onChange(Calendar date, String pYear, String pMonth, String pDay);
     }
 }

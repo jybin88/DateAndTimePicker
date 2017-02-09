@@ -2,8 +2,12 @@ package com.lfh.custom.widget.picker.time;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.support.annotation.ColorInt;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.RequiresApi;
@@ -16,16 +20,18 @@ import android.widget.LinearLayout;
 import com.lfh.custom.widget.R;
 import com.lfh.custom.widget.picker.wheel.WheelView;
 import com.lfh.custom.widget.picker.wheel.adapter.NumericWheelAdapter;
+import com.lfh.custom.widget.picker.wheel.listener.OnWheelChangedListener;
 
 import java.util.Calendar;
+import java.util.HashSet;
 
 /**
  * 时间选择器
  * Created by Administrator on 2017/1/17 0017.
  */
 public class TimePicker extends LinearLayout {
-    private static final int MIN_HOUR = 1;
-    private static final int MAX_HOUR = 24;
+    private static final int MIN_HOUR = 0;
+    private static final int MAX_HOUR = 23;
     private static final int MIN_SECOND = 0;
     private static final int MAX_SECOND = 59;
 
@@ -70,20 +76,24 @@ public class TimePicker extends LinearLayout {
      */
     private boolean mIsCycle = false;
 
+    /**
+     * Picker background color
+     */
+    private int mBackgroundColor = Color.TRANSPARENT;
     private int mSelectedHourIndex;
     private int mSelectedMinuteIndex;
 
     private WheelView mHourWheel;
     private WheelView mMinuteWheel;
 
-    private NumericWheelAdapter mHourWheelAdapter;
+    private HashSet<OnTimeChangeListener> mOnTimeChangeListeners = new HashSet<>();
 
     public TimePicker(Context context) {
         this(context, null);
     }
 
     public TimePicker(Context context, AttributeSet attrs) {
-        this(context, attrs, R.attr.custom_picker_time_timeStyle);
+        this(context, attrs, R.attr.custom_picker_timeStyle);
     }
 
     public TimePicker(Context context, AttributeSet attrs, int defStyleAttr) {
@@ -96,7 +106,7 @@ public class TimePicker extends LinearLayout {
         TypedArray a = context.obtainStyledAttributes(attrs, // LayoutInflater 传进来的值
                 R.styleable.custom_picker_time, // 自定义的 styleable，事实上是一个数组
                 defStyleAttr, // 主题里定义的 style
-                R.style.custom_picker_time_timeDefaultStyle); // 默认的 style
+                R.style.custom_picker_timeDefaultStyle); // 默认的 style
 
         mItemColor = a.getColor(R.styleable.custom_picker_time_custom_picker_time_item_color, ContextCompat.getColor(context, R.color.custom_picker_default_color));
         mSelectedColor = a.getColor(R.styleable.custom_picker_time_custom_picker_time_item_selected_color, ContextCompat.getColor(context, R.color.custom_picker_selected_color));
@@ -105,14 +115,14 @@ public class TimePicker extends LinearLayout {
         mItemHeight = a.getDimensionPixelSize(R.styleable.custom_picker_time_custom_picker_time_item_height, context.getResources().getDimensionPixelSize(R.dimen.custom_picker_wheel_item_height));
         mVisibleItems = a.getInt(R.styleable.custom_picker_time_custom_picker_time_visible_count, DEF_VISIBLE_ITEMS);
         mCenterDrawableId = a.getResourceId(R.styleable.custom_picker_time_custom_picker_time_center_drawable, R.drawable.custom_picker_wheelview_item_center_bg);
-
+        mItemWidth = a.getDimensionPixelSize(R.styleable.custom_picker_time_custom_picker_time_item_width, (getScreenWidth() - 40) / 3);
+        mBackgroundColor = a.getColor(R.styleable.custom_picker_time_custom_picker_time_bg_color, Color.TRANSPARENT);
         a.recycle();
 
         setOrientation(HORIZONTAL);
         setGravity(Gravity.CENTER);
         initWheelData();
-        mItemWidth = (getScreenWidth() - 40) / 3;
-        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(mItemWidth, ViewGroup.LayoutParams.WRAP_CONTENT);
+        LayoutParams lp = new LayoutParams(mItemWidth, ViewGroup.LayoutParams.WRAP_CONTENT);
         lp.leftMargin = 10;
         this.addView(mHourWheel, lp);
         this.addView(mMinuteWheel, lp);
@@ -146,16 +156,35 @@ public class TimePicker extends LinearLayout {
         //set center drawable resource id
         mHourWheel.setCenterDrawableId(mCenterDrawableId);
         mMinuteWheel.setCenterDrawableId(mCenterDrawableId);
+        //set background color
+        mHourWheel.setWheelBackgroundColor(mBackgroundColor);
+        mMinuteWheel.setWheelBackgroundColor(mBackgroundColor);
 
-        mHourWheelAdapter = new NumericWheelAdapter(this.getContext(), MIN_HOUR, MAX_HOUR);
-        NumericWheelAdapter secondWheelAdapter = new NumericWheelAdapter(this.getContext(), MIN_SECOND, MAX_SECOND);
-        mHourWheel.setViewAdapter(mHourWheelAdapter);
+        NumericWheelAdapter hourWheelAdapter = new NumericWheelAdapter(getContext(), MIN_HOUR, MAX_HOUR);
+        NumericWheelAdapter secondWheelAdapter = new NumericWheelAdapter(getContext(), MIN_SECOND, MAX_SECOND);
+        mHourWheel.setViewAdapter(hourWheelAdapter);
         mMinuteWheel.setViewAdapter(secondWheelAdapter);
-
+        // set listeners
+        mHourWheel.addChangingListener(mHourWheelChangedListener);
+        mMinuteWheel.addChangingListener(mMinuteWheelChangedListener);
         //默认显示当前时间
         mHourWheel.setCurrentItem(mSelectedHourIndex);
         mMinuteWheel.setCurrentItem(mSelectedMinuteIndex);
     }
+
+    private OnWheelChangedListener mHourWheelChangedListener = new OnWheelChangedListener() {
+        @Override
+        public void onChanged(WheelView wheel, int oldValue, int newValue) {
+            onTimeChange();
+        }
+    };
+
+    private OnWheelChangedListener mMinuteWheelChangedListener = new OnWheelChangedListener() {
+        @Override
+        public void onChanged(WheelView wheel, int oldValue, int newValue) {
+            onTimeChange();
+        }
+    };
 
     /**
      * 初始化当前时间
@@ -177,12 +206,7 @@ public class TimePicker extends LinearLayout {
      * @param pMinute minute
      */
     public void setShowTime(int pHour, int pMinute) {
-        if (0 == pHour) {//24点、0点判断
-            mSelectedHourIndex = 23;
-        } else {
-            mSelectedHourIndex = pHour - 1;
-        }
-
+        mSelectedHourIndex = pHour;
         mSelectedMinuteIndex = pMinute;
         mHourWheel.setCurrentItem(mSelectedHourIndex);
         mMinuteWheel.setCurrentItem(mSelectedMinuteIndex);
@@ -195,7 +219,6 @@ public class TimePicker extends LinearLayout {
      *
      * @param pVisibleItems the desired count for visible items
      */
-    @SuppressWarnings("unused")
     public void setVisibleItems(int pVisibleItems) {
         mVisibleItems = pVisibleItems;
         mHourWheel.setVisibleItems(pVisibleItems);
@@ -207,7 +230,6 @@ public class TimePicker extends LinearLayout {
      *
      * @param pIsCycle the flag to set
      */
-    @SuppressWarnings("unused")
     public void setCycle(boolean pIsCycle) {
         mIsCycle = pIsCycle;
         mHourWheel.setCyclic(pIsCycle);
@@ -219,7 +241,6 @@ public class TimePicker extends LinearLayout {
      *
      * @param pItemColor item color
      */
-    @SuppressWarnings("unused")
     public void setItemColor(@ColorInt int pItemColor) {
         mItemColor = pItemColor;
         mHourWheel.setWheelItemColor(pItemColor);
@@ -232,7 +253,6 @@ public class TimePicker extends LinearLayout {
      *
      * @param pSelectedColor item selected color
      */
-    @SuppressWarnings("unused")
     public void setSelectedColor(@ColorInt int pSelectedColor) {
         mSelectedColor = pSelectedColor;
         mHourWheel.setWheelSelectedColor(pSelectedColor);
@@ -245,7 +265,6 @@ public class TimePicker extends LinearLayout {
      *
      * @param pItemSize item size
      */
-    @SuppressWarnings("unused")
     public void setItemSize(int pItemSize) {
         mItemSize = pItemSize;
         mHourWheel.setWheelItemSize(pItemSize);
@@ -258,7 +277,6 @@ public class TimePicker extends LinearLayout {
      *
      * @param pSelectedItemSize item selected size
      */
-    @SuppressWarnings("unused")
     public void setSelectedItemSize(int pSelectedItemSize) {
         mSelectedItemSize = pSelectedItemSize;
         mHourWheel.setWheelSelectedItemSize(pSelectedItemSize);
@@ -271,7 +289,6 @@ public class TimePicker extends LinearLayout {
      *
      * @param pItemHeight item height
      */
-    @SuppressWarnings("unused")
     public void setItemHeight(int pItemHeight) {
         mItemHeight = pItemHeight;
         mHourWheel.setWheelItemHeight(pItemHeight);
@@ -284,7 +301,6 @@ public class TimePicker extends LinearLayout {
      *
      * @param pItemWidth item width
      */
-    @SuppressWarnings("unused")
     public void setItemWidth(int pItemWidth) {
         mItemWidth = pItemWidth;
         mHourWheel.getLayoutParams().width = pItemWidth;
@@ -297,7 +313,6 @@ public class TimePicker extends LinearLayout {
      *
      * @param pCenterDrawableId center drawable resource id
      */
-    @SuppressWarnings("unused")
     public void setCenterDrawableId(@DrawableRes int pCenterDrawableId) {
         mCenterDrawableId = pCenterDrawableId;
         mHourWheel.setCenterDrawableId(mCenterDrawableId);
@@ -346,17 +361,76 @@ public class TimePicker extends LinearLayout {
      */
     public String getTimeString() {
         StringBuilder timeBuilder = new StringBuilder();
-        int hour = mHourWheel.getCurrentItem() + 1;
-
-        if (24 == hour) {
-            timeBuilder.append("0");
-        } else {
-            timeBuilder.append(hour);
+        int hour = getHour();
+        if (hour < 10) {
+            timeBuilder.append("0"); // 03:03
         }
-
+        timeBuilder.append(hour);
         timeBuilder.append(":");
-        timeBuilder.append(mMinuteWheel.getCurrentItem());
+
+        int minute = getMinute();
+        if (minute < 10) {
+            timeBuilder.append("0");
+        }
+        timeBuilder.append(minute);
 
         return timeBuilder.toString();
+    }
+
+    private int getMinute() {
+        return mMinuteWheel.getCurrentItem();
+    }
+
+    private int getHour() {
+        return mHourWheel.getCurrentItem();
+    }
+
+    /**
+     * 移除监听
+     */
+    public void removeWheelChangedListener() {
+        mHourWheel.removeChangingListener(mHourWheelChangedListener);
+        mMinuteWheel.removeChangingListener(mMinuteWheelChangedListener);
+    }
+
+    private Handler mDebounceHandler = new Handler(Looper.getMainLooper()) {
+        @Override
+        public void handleMessage(Message msg) {
+            if (msg.what == R.id.custom_picker_on_change) {
+                for (OnTimeChangeListener nextListener : mOnTimeChangeListeners) {
+                    nextListener.onChange((Calendar) msg.obj);
+                }
+            } else if (msg.what == R.id.custom_picker_on_change_debounce) {
+                // 防止当快速滑动时会快速调用回调的问题
+                mDebounceHandler.removeMessages(R.id.custom_picker_on_change);
+                Message message = mDebounceHandler.obtainMessage(R.id.custom_picker_on_change);
+                message.obj = msg.obj;
+                mDebounceHandler.sendMessageDelayed(message, 500);
+            }
+        }
+    };
+
+    private void onTimeChange() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.clear();
+        calendar.set(Calendar.HOUR_OF_DAY, getHour());
+        calendar.set(Calendar.MINUTE, getMinute());
+        Message message = mDebounceHandler.obtainMessage(R.id.custom_picker_on_change_debounce);
+        message.obj = calendar;
+        mDebounceHandler.sendMessage(message);
+    }
+
+    public void addOnDateChangeListener(OnTimeChangeListener listener) {
+        if (listener == null) return;
+        mOnTimeChangeListeners.add(listener);
+    }
+
+    public void removeOnDateChangeListener(OnTimeChangeListener listener) {
+        if (listener == null) return;
+        mOnTimeChangeListeners.remove(listener);
+    }
+
+    public interface OnTimeChangeListener {
+        void onChange(Calendar date);
     }
 }

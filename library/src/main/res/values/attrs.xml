@@ -3,12 +3,14 @@
 
     <declare-styleable name="custom_picker_date">
         <attr name="custom_picker_date_item_color" format="color"/>
-        <attr name="custom_picker_date_item_selector_color" format="color"/>
+        <attr name="custom_picker_date_item_selected_color" format="color"/>
         <attr name="custom_picker_date_item_size" format="color"/>
         <attr name="custom_picker_date_selected_item_size" format="color"/>
+        <attr name="custom_picker_date_item_width" format="dimension" />
         <attr name="custom_picker_date_item_height" format="dimension"/>
         <attr name="custom_picker_date_visible_count" format="integer"/>
         <attr name="custom_picker_date_center_drawable" format="reference"/>
+        <attr name="custom_picker_date_bg_color" format="color"/>
     </declare-styleable>
 
     <declare-styleable name="custom_picker_time">
@@ -16,9 +18,11 @@
         <attr name="custom_picker_time_item_selected_color" format="color"/>
         <attr name="custom_picker_time_item_size" format="color"/>
         <attr name="custom_picker_time_selected_item_size" format="color"/>
+        <attr name="custom_picker_time_item_width" format="dimension" />
         <attr name="custom_picker_time_item_height" format="dimension"/>
         <attr name="custom_picker_time_visible_count" format="integer"/>
         <attr name="custom_picker_time_center_drawable" format="reference"/>
+        <attr name="custom_picker_time_bg_color" format="color"/>
     </declare-styleable>
 
     <declare-styleable name="custom_picker_wheel">
@@ -32,9 +36,10 @@
         <attr name="custom_picker_wheel_content_padding" format="dimension"/>
     </declare-styleable>
 
-    <attr name="custom_picker_wheel_wheelStyle" format="reference"/>
+    <attr name="custom_picker_wheelStyle" format="reference"/>
 
-    <attr name="custom_picker_time_timeStyle" format="reference"/>
+    <attr name="custom_picker_timeStyle" format="reference"/>
 
-    <attr name="custom_picker_date_dateStyle" format="reference"/>
+    <attr name="custom_picker_dateStyle" format="reference"/>
+
 </resources>

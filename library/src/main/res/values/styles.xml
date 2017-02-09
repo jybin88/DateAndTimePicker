@@ -1,40 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="custom_picker_wheel_wheelDefaultStyle">
+    <style name="custom_picker_wheelDefaultStyle">
         <item name="custom_picker_wheel_item_color">@color/custom_picker_default_color</item>
         <item name="custom_picker_wheelSelectedColor">@color/custom_picker_selected_color</item>
         <item name="custom_picker_wheel_item_size">@dimen/custom_picker_wheel_text_size</item>
         <item name="custom_picker_time_selected_item_size">@dimen/custom_picker_selected_text_size</item>
         <item name="custom_picker_time_item_height">@dimen/custom_picker_wheel_item_height</item>
         <item name="custom_picker_time_visible_count">5</item>
-        <item name="custom_picker_time_center_drawable">
-            @drawable/custom_picker_wheelview_item_center_bg
-        </item>
+        <item name="custom_picker_time_center_drawable">@drawable/custom_picker_wheelview_item_center_bg</item>
         <item name="custom_picker_wheel_content_padding">@dimen/custom_picker_wheel_text_padding</item>
     </style>
 
-    <style name="custom_picker_date_dateDefaultStyle">
+    <style name="custom_picker_dateDefaultStyle">
         <item name="custom_picker_date_item_color">@color/custom_picker_default_color</item>
-        <item name="custom_picker_date_item_selector_color">@color/custom_picker_selected_color</item>
+        <item name="custom_picker_date_item_selected_color">@color/custom_picker_selected_color</item>
         <item name="custom_picker_date_item_size">@dimen/custom_picker_wheel_text_size</item>
         <item name="custom_picker_date_selected_item_size">@dimen/custom_picker_selected_text_size</item>
         <item name="custom_picker_date_item_height">@dimen/custom_picker_wheel_item_height</item>
         <item name="custom_picker_date_visible_count">5</item>
-        <item name="custom_picker_date_center_drawable">
-            @drawable/custom_picker_wheelview_item_center_bg
-        </item>
+        <item name="custom_picker_date_center_drawable">@drawable/custom_picker_wheelview_item_center_bg</item>
     </style>
 
-    <style name="custom_picker_time_timeDefaultStyle">
+    <style name="custom_picker_timeDefaultStyle">
         <item name="custom_picker_time_item_color">@color/custom_picker_default_color</item>
         <item name="custom_picker_time_item_selected_color">@color/custom_picker_selected_color</item>
         <item name="custom_picker_time_item_size">@dimen/custom_picker_wheel_text_size</item>
         <item name="custom_picker_time_selected_item_size">@dimen/custom_picker_selected_text_size</item>
         <item name="custom_picker_time_item_height">@dimen/custom_picker_wheel_item_height</item>
         <item name="custom_picker_time_visible_count">5</item>
-        <item name="custom_picker_time_center_drawable">
-            @drawable/custom_picker_wheelview_item_center_bg
-        </item>
+        <item name="custom_picker_time_center_drawable">@drawable/custom_picker_wheelview_item_center_bg</item>
+    </style>
+
+    <style name="custom_picker_Dialog" parent="Theme.AppCompat.Light.Dialog">
+        <item name="colorAccent">#38ACFF</item>
+        <item name="windowNoTitle">true</item>
     </style>
 </resources>
