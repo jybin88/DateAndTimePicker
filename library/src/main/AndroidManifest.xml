@@ -1,8 +1,13 @@
-<manifest package="com.lfh.custom.widget"
-          xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+          package="com.lfh.custom.widget.picker">
 
-    <application >
-
+    <application>
+        <activity
+            android:name="com.lfh.custom.widget.picker.activity.WheelActivity"
+            android:theme="@style/custom_picker_Dialog"/>
+        <activity
+            android:name="com.lfh.custom.widget.picker.activity.ChineseDatePickerActivity"
+            android:theme="@style/custom_picker_Dialog"/>
     </application>
 
 </manifest>
