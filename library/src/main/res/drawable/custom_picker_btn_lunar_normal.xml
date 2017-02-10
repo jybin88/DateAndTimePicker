@@ -3,25 +3,25 @@
     <!-- 边框颜色值 -->
     <item>
         <shape>
-            <solid android:color="@color/ent_picker_color14"/>
+            <solid android:color="@color/custom_picker_color14"/>
             <!--右上，右下圆角-->
             <corners
-                android:bottomRightRadius="@dimen/ent_picker_button_radius"
-                android:topRightRadius="@dimen/ent_picker_button_radius"/>
+                android:bottomRightRadius="@dimen/custom_picker_button_radius"
+                android:topRightRadius="@dimen/custom_picker_button_radius"/>
         </shape>
     </item>
     <!-- 此处定义只有右上下三边有边框-->
     <item
-        android:bottom="@dimen/ent_picker_line_size"
-        android:right="@dimen/ent_picker_line_size"
-        android:top="@dimen/ent_picker_line_size">
+        android:bottom="@dimen/custom_picker_line_size"
+        android:right="@dimen/custom_picker_line_size"
+        android:top="@dimen/custom_picker_line_size">
         <!--边框里面背景颜色-->
         <shape>
-            <solid android:color="@color/ent_picker_color7"/>
+            <solid android:color="@color/custom_picker_color7"/>
             <!--右上，右下圆角-->
             <corners
-                android:bottomRightRadius="@dimen/ent_picker_button_radius"
-                android:topRightRadius="@dimen/ent_picker_button_radius"/>
+                android:bottomRightRadius="@dimen/custom_picker_button_radius"
+                android:topRightRadius="@dimen/custom_picker_button_radius"/>
         </shape>
     </item>
 </layer-list>

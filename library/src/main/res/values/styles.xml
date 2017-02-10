@@ -31,9 +31,4 @@
         <item name="custom_picker_time_visible_count">5</item>
         <item name="custom_picker_time_center_drawable">@drawable/custom_picker_wheelview_item_center_bg</item>
     </style>
-
-    <style name="custom_picker_Dialog" parent="Theme.AppCompat.Light.Dialog">
-        <item name="colorAccent">#38ACFF</item>
-        <item name="windowNoTitle">true</item>
-    </style>
 </resources>

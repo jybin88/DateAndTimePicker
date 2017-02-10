@@ -15,9 +15,9 @@
         android:checked="true"
         android:gravity="center"
         android:maxLines="1"
-        android:text="@string/ent_picker_gregorian"
-        android:textColor="@color/ent_picker_color7"
-        android:textSize="@dimen/ent_picker_fontsize13"/>
+        android:text="@string/custom_picker_gregorian"
+        android:textColor="@color/custom_picker_color7"
+        android:textSize="@dimen/custom_picker_fontsize13"/>
 
     <RadioButton
         android:id="@+id/rb_lunar"
@@ -28,7 +28,7 @@
         android:checked="false"
         android:gravity="center"
         android:maxLines="1"
-        android:text="@string/ent_picker_lunar"
-        android:textColor="@color/ent_picker_color14"
-        android:textSize="@dimen/ent_picker_fontsize13"/>
+        android:text="@string/custom_picker_lunar"
+        android:textColor="@color/custom_picker_color14"
+        android:textSize="@dimen/custom_picker_fontsize13"/>
 </LinearLayout>

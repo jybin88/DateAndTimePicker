@@ -115,7 +115,7 @@ public class WheelView extends View {
     }
 
     public WheelView(Context context, AttributeSet attrs) {
-        this(context, attrs, R.attr.custom_picker_wheel_wheelStyle);
+        this(context, attrs, R.attr.custom_picker_wheelStyle);
     }
 
     public WheelView(Context context, AttributeSet attrs, int defStyle) {
@@ -128,7 +128,7 @@ public class WheelView extends View {
         TypedArray a = context.obtainStyledAttributes(attrs, // LayoutInflater 传进来的值
                 R.styleable.custom_picker_wheel, // 自定义的 styleable，事实上是一个数组
                 defStyle, // 主题里定义的 style
-                R.style.custom_picker_wheel_wheelDefaultStyle); // 默认的 style
+                R.style.custom_picker_wheelDefaultStyle); // 默认的 style
 
         wheelItemColor = a.getColor(R.styleable.custom_picker_wheel_custom_picker_wheel_item_color, ContextCompat.getColor(context, R.color.custom_picker_default_color));
         wheelSelectedColor = a.getColor(R.styleable.custom_picker_wheel_custom_picker_wheelSelectedColor, ContextCompat.getColor(context, R.color.custom_picker_selected_color));
