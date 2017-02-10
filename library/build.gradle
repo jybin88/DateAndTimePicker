@@ -1,12 +1,13 @@
 apply plugin: 'com.android.library'
+apply from: 'https://github.com/jybin88/public/raw/master/version.gradle'
 apply plugin: 'com.github.dcendents.android-maven' //发布配置(3)
 
 android {
-    compileSdkVersion 24
-    buildToolsVersion "24.0.3"
+    compileSdkVersion vCompileSdk
+    buildToolsVersion vBuildTools
     defaultConfig {
-        minSdkVersion 15
-        targetSdkVersion 22
+        minSdkVersion vMinSdk
+        targetSdkVersion vTargetSdk
         versionCode 1
         versionName "1.0"
 
@@ -24,10 +25,11 @@ android {
 
 dependencies {
     //android library
-    compile "com.android.support:support-annotations:24.2.1"
-    compile "com.android.support:support-v4:24.2.1"
-    compile 'com.android.support:appcompat-v7:24.2.1'
+    compile "com.android.support:support-annotations:$vSupportLib"
+    compile "com.android.support:support-v4:$vSupportLib"
+    compile "com.android.support:appcompat-v7:$vSupportLib"
+
     //third library
-    compile 'com.github.jybin88:CommonRes:V0.1'
-    compile 'com.github.jybin88:CommonUtil:v0.2'
+    compile "com.github.jybin88:CommonRes:$vCommonRes"
+    compile "com.github.jybin88:CommonUtil:$vCommonUtil"
 }
