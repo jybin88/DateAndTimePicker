@@ -6,7 +6,7 @@ buildscript {
     dependencies {
         //这一句是Android Studio自带的
         classpath 'com.android.tools.build:gradle:2.2.3'
-        //这一名是JitPack插件
+        //这一句是JitPack插件
         classpath 'com.github.dcendents:android-maven-gradle-plugin:1.5' //发布配置(1)
     }
 }
