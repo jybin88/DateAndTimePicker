@@ -13,7 +13,7 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
-import com.lfh.custom.widget.R;
+import com.lfh.custom.widget.picker.R;
 import com.lfh.custom.widget.picker.UiUtil;
 import com.lfh.custom.widget.picker.wheel.WheelView;
 import com.lfh.custom.widget.picker.wheel.adapter.TextWheelAdapter;

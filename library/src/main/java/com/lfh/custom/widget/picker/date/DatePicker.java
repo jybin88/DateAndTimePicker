@@ -19,7 +19,7 @@ import android.view.Gravity;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
-import com.lfh.custom.widget.R;
+import com.lfh.custom.widget.picker.R;
 import com.lfh.custom.widget.picker.wheel.WheelView;
 import com.lfh.custom.widget.picker.wheel.adapter.NumericWheelAdapter;
 import com.lfh.custom.widget.picker.wheel.listener.OnWheelChangedListener;

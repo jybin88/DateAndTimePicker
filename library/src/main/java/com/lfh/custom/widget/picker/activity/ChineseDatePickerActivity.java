@@ -12,7 +12,7 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 
-import com.lfh.custom.widget.R;
+import com.lfh.custom.widget.picker.R;
 import com.lfh.custom.widget.picker.UiUtil;
 import com.lfh.custom.widget.picker.date.ChineseDatePicker;
 

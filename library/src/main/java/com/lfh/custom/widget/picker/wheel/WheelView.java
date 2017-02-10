@@ -18,7 +18,7 @@ import android.view.ViewGroup.LayoutParams;
 import android.view.animation.Interpolator;
 import android.widget.LinearLayout;
 
-import com.lfh.custom.widget.R;
+import com.lfh.custom.widget.picker.R;
 import com.lfh.custom.widget.picker.wheel.WheelScroller.ScrollingListener;
 import com.lfh.custom.widget.picker.wheel.adapter.WheelViewAdapter;
 import com.lfh.custom.widget.picker.wheel.listener.OnWheelChangedListener;

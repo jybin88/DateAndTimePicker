@@ -11,7 +11,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.lfh.custom.widget.R;
+import com.lfh.custom.widget.picker.R;
 
 
 /**
