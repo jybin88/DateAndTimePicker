@@ -12,6 +12,7 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 
+import com.lfh.custom.common.util.DimenUtil;
 import com.lfh.custom.widget.picker.R;
 import com.lfh.custom.widget.picker.UiUtil;
 import com.lfh.custom.widget.picker.date.ChineseDatePicker;
@@ -71,7 +72,7 @@ public class ChineseDatePickerActivity extends BasePickerActivity implements Chi
         });
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         lp.gravity = Gravity.CENTER;
-        lp.topMargin = UiUtil.dip2px(this, 24f);
+        lp.topMargin = DimenUtil.dip2px(this, 24f);
         llTopPanel.addView(headView, lp);
 
         mDatePicker = new ChineseDatePicker(this);

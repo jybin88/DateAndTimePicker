@@ -17,6 +17,7 @@ import android.view.Gravity;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
+import com.lfh.custom.common.util.ScreenUtil;
 import com.lfh.custom.widget.picker.R;
 import com.lfh.custom.widget.picker.wheel.WheelView;
 import com.lfh.custom.widget.picker.wheel.adapter.NumericWheelAdapter;
@@ -115,7 +116,7 @@ public class TimePicker extends LinearLayout {
         mItemHeight = a.getDimensionPixelSize(R.styleable.custom_picker_time_custom_picker_time_item_height, context.getResources().getDimensionPixelSize(R.dimen.custom_picker_wheel_item_height));
         mVisibleItems = a.getInt(R.styleable.custom_picker_time_custom_picker_time_visible_count, DEF_VISIBLE_ITEMS);
         mCenterDrawableId = a.getResourceId(R.styleable.custom_picker_time_custom_picker_time_center_drawable, R.drawable.custom_picker_wheelview_item_center_bg);
-        mItemWidth = a.getDimensionPixelSize(R.styleable.custom_picker_time_custom_picker_time_item_width, (getScreenWidth() - 40) / 3);
+        mItemWidth = a.getDimensionPixelSize(R.styleable.custom_picker_time_custom_picker_time_item_width, (ScreenUtil.getScreenWidth(getContext()) - 40) / 3);
         mBackgroundColor = a.getColor(R.styleable.custom_picker_time_custom_picker_time_bg_color, Color.TRANSPARENT);
         a.recycle();
 
@@ -193,10 +194,6 @@ public class TimePicker extends LinearLayout {
         Calendar calendar = Calendar.getInstance();
         mSelectedHourIndex = calendar.get(Calendar.HOUR) - 1;
         mSelectedMinuteIndex = calendar.get(Calendar.MINUTE);
-    }
-
-    private int getScreenWidth() {
-        return this.getContext().getResources().getDisplayMetrics().widthPixels;
     }
 
     /**

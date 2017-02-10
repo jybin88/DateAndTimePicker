@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="custom_picker_default_color">#999999</color>
-    <color name="custom_picker_selected_color">#333333</color>
+    <color name="custom_picker_default_color">@color/color4</color>
+    <color name="custom_picker_selected_color">@color/color1</color>
 
-    <color name="custom_picker_color1">#333333</color>
-    <color name="custom_picker_color4">#999999</color>
-    <color name="custom_picker_color14">#38adff</color>
-    <color name="custom_picker_color7">#ffffff</color>
+    <color name="custom_picker_color1">@color/color1</color>
+    <color name="custom_picker_color4">@color/color4</color>
+    <color name="custom_picker_color14">@color/color14</color>
+    <color name="custom_picker_color7">@color/color7</color>
 </resources>

@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
+import com.lfh.custom.common.util.DimenUtil;
 import com.lfh.custom.widget.picker.R;
 import com.lfh.custom.widget.picker.UiUtil;
 import com.lfh.custom.widget.picker.wheel.WheelView;
@@ -51,7 +52,7 @@ public class WheelActivity extends AppCompatActivity implements View.OnClickList
 
         mWheelView = new WheelView(this);
         mWheelView.addChangingListener(this);
-        mWheelView.setWheelItemHeight(UiUtil.dip2px(this, 46f));
+        mWheelView.setWheelItemHeight(DimenUtil.dip2px(this, 46f));
         mWheelView.setWheelItemColor(ContextCompat.getColor(this, R.color.custom_picker_color4));
         mWheelView.setWheelSelectedColor(ContextCompat.getColor(this, R.color.custom_picker_color1));
         mWheelView.setWheelItemSize(getResources().getDimensionPixelSize(R.dimen.custom_picker_fontsize14));

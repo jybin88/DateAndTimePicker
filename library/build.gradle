@@ -23,7 +23,11 @@ android {
 }
 
 dependencies {
+    //android library
     compile "com.android.support:support-annotations:24.2.1"
     compile "com.android.support:support-v4:24.2.1"
     compile 'com.android.support:appcompat-v7:24.2.1'
+    //third library
+    compile 'com.github.jybin88:CommonRes:V0.1'
+    compile 'com.github.jybin88:CommonUtil:v0.2'
 }

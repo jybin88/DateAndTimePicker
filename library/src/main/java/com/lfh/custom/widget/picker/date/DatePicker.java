@@ -19,6 +19,7 @@ import android.view.Gravity;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
+import com.lfh.custom.common.util.ScreenUtil;
 import com.lfh.custom.widget.picker.R;
 import com.lfh.custom.widget.picker.wheel.WheelView;
 import com.lfh.custom.widget.picker.wheel.adapter.NumericWheelAdapter;
@@ -129,7 +130,7 @@ public class DatePicker extends LinearLayout {
         mItemHeight = a.getDimensionPixelSize(R.styleable.custom_picker_date_custom_picker_date_item_height, context.getResources().getDimensionPixelSize(R.dimen.custom_picker_wheel_item_height));
         mVisibleItems = a.getInt(R.styleable.custom_picker_date_custom_picker_date_visible_count, DEF_VISIBLE_ITEMS);
         mCenterDrawableId = a.getResourceId(R.styleable.custom_picker_date_custom_picker_date_center_drawable, R.drawable.custom_picker_wheelview_item_center_bg);
-        mItemWidth = a.getDimensionPixelSize(R.styleable.custom_picker_date_custom_picker_date_item_width, (getScreenWidth() - 40) / 3);
+        mItemWidth = a.getDimensionPixelSize(R.styleable.custom_picker_date_custom_picker_date_item_width, (ScreenUtil.getScreenWidth(getContext()) - 40) / 3);
         mBackgroundColor = a.getColor(R.styleable.custom_picker_date_custom_picker_date_bg_color, Color.TRANSPARENT);
 
         a.recycle();
@@ -228,10 +229,6 @@ public class DatePicker extends LinearLayout {
             onDateChange();
         }
     };
-
-    private int getScreenWidth() {
-        return this.getContext().getResources().getDisplayMetrics().widthPixels;
-    }
 
     /**
      * 更新月份天数
