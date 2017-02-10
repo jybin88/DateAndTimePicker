@@ -14,6 +14,7 @@ import android.support.annotation.RequiresApi;
 import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
@@ -27,12 +28,14 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.HashSet;
 import java.util.Locale;
+import java.util.TimeZone;
 
 /**
  * 日期选择器
  * Created by Administrator on 2017/1/16 0016.
  */
 public class DatePicker extends LinearLayout {
+    private static final String TAG = "DatePicker";
     private static final String DEFAULT_DATE_FORMAT = "yyyy-MM-dd";//默认时间格式化
     private static final int DEFAULT_START_YEAR = 1900;//默认开始的时间
     private static final int DEFAULT_END_YEAR = 2100;//默认结束时间
@@ -320,6 +323,25 @@ public class DatePicker extends LinearLayout {
         calendar.set(Calendar.DATE, mDayWheel.getCurrentItem() + 1);
 
         return new SimpleDateFormat(formatString, Locale.CHINA).format(calendar.getTime());
+    }
+
+    /**
+     * 返回标准格林尼治时间下日期时间对应的时间戳
+     *
+     * @return 标准格林尼治时间下日期时间对应的时间戳
+     */
+    public long getDateTimeMillis() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.YEAR, getYearValue());
+        calendar.set(Calendar.MONTH, mMonthWheel.getCurrentItem());
+        calendar.set(Calendar.DATE, mDayWheel.getCurrentItem() + 1);
+
+        long unixTime = calendar.getTimeInMillis(); //获取当前时区下日期时间对应的时间戳
+        long unixTimeGMT = unixTime - TimeZone.getDefault().getRawOffset(); //获取标准格林尼治时间下日期时间对应的时间戳
+
+        Log.d(TAG, "unixTime(" + unixTime + ")" + "|" + "unixTimeGMT(" + unixTimeGMT + ")");
+
+        return unixTimeGMT;
     }
 
     private int getYearValue() {

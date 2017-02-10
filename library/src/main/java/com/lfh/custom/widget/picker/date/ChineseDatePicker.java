@@ -14,6 +14,7 @@ import android.support.annotation.RequiresApi;
 import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
@@ -32,6 +33,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.TimeZone;
 
 /**
  * 中国式日期选择
@@ -39,6 +41,7 @@ import java.util.Locale;
  */
 @SuppressWarnings("WrongConstant")
 public class ChineseDatePicker extends LinearLayout {
+    private static final String TAG = "ChineseDatePicker";
     private static final String DEFAULT_DATE_FORMAT = "yyyy-MM-dd";//默认时间格式化
     private static final int YEAR_START = 1900; //起始年份
     private static final int YEAR_END = 2100; //结束年份
@@ -481,22 +484,22 @@ public class ChineseDatePicker extends LinearLayout {
     }
 
     /**
-     * 返回日期字符串
+     * 返回公历日期字符串
      *
      * @return 日期字符串(yyyy-MM-dd)
      */
     @SuppressWarnings("JavaDoc")
-    public String getDateString() {
-        return getDateFormatString("");
+    public String getGregorianDateString() {
+        return getGregorianDateString("");
     }
 
     /**
-     * 返回日期字符串
+     * 返回公历日期字符串
      *
      * @param pDateFormat 日期格式化字符
      * @return 格式化后的日期字符串
      */
-    public String getDateFormatString(String pDateFormat) {
+    public String getGregorianDateString(String pDateFormat) {
         String formatString = DEFAULT_DATE_FORMAT;
 
         if (!TextUtils.isEmpty(pDateFormat)) {
@@ -504,11 +507,56 @@ public class ChineseDatePicker extends LinearLayout {
         }
 
         int year = getYearValue();
-        int month = mMonthWheel.getCurrentItem();
+        int month = mMonthWheel.getCurrentItem() + 1;
         int day = mDayWheel.getCurrentItem() + 1;
-        ChineseCalendar chineseCalendar = new ChineseCalendar(year, month, day);
 
-        return new SimpleDateFormat(formatString, Locale.CHINESE).format(chineseCalendar.getTime());
+        ChineseCalendar calendar;
+
+        if (mIsGregorian) {
+            calendar = new ChineseCalendar(year, month - 1, day);
+        } else {
+            calendar = new ChineseCalendar(true, year, month, day);
+        }
+
+        return new SimpleDateFormat(formatString, Locale.CHINESE).format(calendar.getTime());
+    }
+
+    /**
+     * 返回农历日期字符串
+     *
+     * @return 农历日期字符串
+     */
+    public String getLunarDateString() {
+        return String.format(getResources().getString(R.string.custom_picker_year_format), String.valueOf(mChineseCalendar.get(ChineseCalendar.YEAR))) +
+                mChineseCalendar.getChinese(ChineseCalendar.CHINESE_MONTH) +
+                mChineseCalendar.getChinese(ChineseCalendar.CHINESE_DATE);
+    }
+
+    /**
+     * 返回标准格林尼治时间下日期时间对应的时间戳
+     *
+     * @return 标准格林尼治时间下日期时间对应的时间戳
+     */
+    public long getDateTimeMillis() {
+        int year = getYearValue();
+        int month = mMonthWheel.getCurrentItem() + 1;
+        int day = mDayWheel.getCurrentItem() + 1;
+
+        if (mIsGregorian) {
+            ChineseCalendar chineseCalendar = new ChineseCalendar(year, month - 1, day);//直接使用这句后去获取时间戳跟农历状态下获取的时间戳转换后会差一天
+            year = chineseCalendar.get(ChineseCalendar.CHINESE_YEAR);
+            month = chineseCalendar.get(ChineseCalendar.CHINESE_MONTH);
+            day = chineseCalendar.get(ChineseCalendar.CHINESE_DATE);
+        }
+
+        ChineseCalendar calendar = new ChineseCalendar(true, year, month, day);
+
+        long unixTime = calendar.getTimeInMillis(); //获取当前时区下日期时间对应的时间戳
+        long unixTimeGMT = unixTime - TimeZone.getDefault().getRawOffset(); //获取标准格林尼治时间下日期时间对应的时间戳
+
+        Log.d(TAG, "unixTime(" + unixTime + ")" + "|" + "unixTimeGMT(" + unixTimeGMT + ")");
+
+        return unixTimeGMT;
     }
 
 
