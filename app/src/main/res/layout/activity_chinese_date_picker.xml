@@ -4,7 +4,7 @@
               android:layout_height="match_parent"
               android:orientation="vertical">
 
-    <com.nd.ent.widget.DatePicker
+    <com.nd.ent.widget.ChineseDatePicker
         android:id="@+id/dp_picker"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
@@ -29,6 +29,13 @@
             android:orientation="vertical">
 
             <Button
+                android:id="@+id/btn_toggle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:tag="n"
+                android:text="切换公历"/>
+
+            <Button
                 android:id="@+id/btn_show_time_millis"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -37,11 +44,18 @@
                 android:textColor="@android:color/black"/>
 
             <Button
+                android:id="@+id/btn_show_lunar_time"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="显示农历时间"
+                android:textAllCaps="false"
+                android:textColor="@android:color/black"/>
+
+            <Button
                 android:id="@+id/btn_show_time"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:text="默认时间显示格式"
+                android:text="默认公历时间格式"
                 android:textAllCaps="false"
                 android:textColor="@android:color/black"/>
 
@@ -50,16 +64,25 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
-                android:text="自定义时间显示格式(yyyy/MM/dd)"
+                android:text="自定义公历时间格式(yyyy/MM/dd)"
                 android:textAllCaps="false"
                 android:textColor="@android:color/black"/>
 
             <Button
-                android:id="@+id/btn_set_time"
+                android:id="@+id/btn_set_gregorian_time"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
-                android:text="更改显示时间(2016.10.25)"
+                android:text="更改显示时间(公历2017.7.10)"
+                android:textAllCaps="false"
+                android:textColor="@android:color/black"/>
+
+            <Button
+                android:id="@+id/btn_set_lunar_time"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="更改显示时间(农历2017.7.10)"
                 android:textAllCaps="false"
                 android:textColor="@android:color/black"/>
 

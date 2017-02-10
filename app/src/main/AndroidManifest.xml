@@ -21,6 +21,9 @@
         <activity
             android:name=".TimePickerActivity"
             android:screenOrientation="portrait"/>
+        <activity
+            android:name=".ChineseDatePickerActivity"
+            android:screenOrientation="portrait"/>
     </application>
 
 </manifest>

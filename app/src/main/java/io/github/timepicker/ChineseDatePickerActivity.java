@@ -5,28 +5,46 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.Button;
 import android.widget.TextView;
 
-import com.lfh.custom.widget.picker.date.DatePicker;
+import com.lfh.custom.widget.picker.date.ChineseDatePicker;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-
 /**
- * 日期选择器demo
+ * 中式日期选择器demo
  * Created by Administrator on 2017/1/17 0017.
  */
-public class DatePickerActivity extends AppCompatActivity {
-    DatePicker mDatePicker;
+public class ChineseDatePickerActivity extends AppCompatActivity {
+    private ChineseDatePicker mDatePicker;
+    private Button mBtnToggle;
     private TextView mTvDate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_date_picker);
-        mDatePicker = (DatePicker) findViewById(R.id.dp_picker);
+        setContentView(R.layout.activity_chinese_date_picker);
+        mDatePicker = (ChineseDatePicker) findViewById(R.id.dp_picker);
         mTvDate = (TextView) findViewById(R.id.tv_date);
+        mBtnToggle = (Button) findViewById(R.id.btn_toggle);
+        mBtnToggle.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View pView) {
+                String tag = mBtnToggle.getTag().toString();
+
+                if ("n".equals(tag)) {
+                    mBtnToggle.setText("切换农历");
+                    mBtnToggle.setTag("g");
+                    mDatePicker.showGregorian(true);
+                } else if ("g".equals(tag)) {
+                    mBtnToggle.setText("切换公历");
+                    mBtnToggle.setTag("n");
+                    mDatePicker.showGregorian(false);
+                }
+            }
+        });
 
         findViewById(R.id.btn_show_time_millis).setOnClickListener(new OnClickListener() {
             @Override
@@ -37,25 +55,39 @@ public class DatePickerActivity extends AppCompatActivity {
             }
         });
 
+        findViewById(R.id.btn_show_lunar_time).setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View pView) {
+                mTvDate.setText(mDatePicker.getLunarDateString());
+            }
+        });
         findViewById(R.id.btn_show_time).setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View pView) {
-                mTvDate.setText(mDatePicker.getDateString());
+                mTvDate.setText(mDatePicker.getGregorianDateString());
             }
         });
 
         findViewById(R.id.btn_format_time).setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View pView) {
-                mTvDate.setText(mDatePicker.getDateFormatString("yyyy/MM/dd"));
+                mTvDate.setText(mDatePicker.getGregorianDateString("yyyy/MM/dd"));
             }
         });
 
-        findViewById(R.id.btn_set_time).setOnClickListener(new OnClickListener() {
+        findViewById(R.id.btn_set_gregorian_time).setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View pView) {
                 mTvDate.setText("");
-                mDatePicker.setShowDate(2016, 10, 25);
+                mDatePicker.setGregorianDate(2017, 7, 10);
+            }
+        });
+
+        findViewById(R.id.btn_set_lunar_time).setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View pView) {
+                mTvDate.setText("");
+                mDatePicker.setLunarDate(2017, 7, 10);
             }
         });
 

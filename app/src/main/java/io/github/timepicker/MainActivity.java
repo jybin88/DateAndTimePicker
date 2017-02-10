@@ -18,6 +18,13 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        findViewById(R.id.btn_chinese_date).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View pView) {
+                startActivity(new Intent(MainActivity.this, ChineseDatePickerActivity.class));
+            }
+        });
+
         findViewById(R.id.btn_time).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View pView) {

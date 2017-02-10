@@ -5,8 +5,7 @@
     android:id="@+id/activity_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context="io.github.chen_youping.timetable.MainActivity">
+    android:orientation="vertical">
 
     <Button
         android:id="@+id/btn_date"
@@ -15,7 +14,13 @@
         android:layout_marginTop="10dp"
         android:text="日期选择demo"
         android:textColor="@android:color/black"/>
-
+    <Button
+        android:id="@+id/btn_chinese_date"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="中式日期选择 API DEMO"
+        android:textColor="@android:color/black"/>
     <Button
         android:id="@+id/btn_time"
         android:layout_width="match_parent"
