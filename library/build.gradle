@@ -1,5 +1,5 @@
 apply plugin: 'com.android.library'
-apply from: 'publish.gradle'
+apply plugin: 'com.github.dcendents.android-maven' //发布配置(3)
 
 android {
     compileSdkVersion 24
