@@ -1,15 +1,17 @@
-# TimePicker、DatePicker 
+# TimePicker、DatePicker、ChineseDatePicker
 
-时间和日期选择器
+时间选择器、日期选择器、中式日期选择器（包含农历）
 
 ---
 
 开发者：lifh
 
-本库提供时间选择、日期选择功能，主要功能：
+本库提供时间选择、日期选择、农历选择功能，主要功能：
 ---------------------
 
  - 获取选中的日期
+ - 获取选中日期的时间戳
+ - 获取选中农历日期
  - 获取选中的时间
 
 可自定义选项
@@ -24,6 +26,12 @@
  - 更改宽度
  - 更新选中的背景图片
 
+Gradle依赖
+----------
+```gradle
+    compile "com.nd.ent:TimePicker:0.0.3.picker
+```
+
 获取选中的日期、时间
 ----------
 
@@ -32,10 +40,18 @@
 getDateString(); //返回格式为yyyy-MM-dd
 getDateFormatString(String pDateFormat) //返回自定义格式(pDateFormat)的日期
 ```
-> 2.时间选择器
+> 2.中式日期选择器
 ```java
-getTimeString(); //返回格式为HH:mm
+getGregorianDateString();//返回格式为yyyy-MM-dd
+getGregorianDateString(String pDateFormat) //返回公历日期字符串（自定义格式pDateFormat）
+getLunarDateString() //返回农历日期字符串 eg.2017年正月十七
+getDateTimeMillis() //返回公历时间戳
 ```
+> 3.时间选择器
+```java
+getTimeString(); //返回公历日期字符串（格式为HH:mm）
+```
+
 显示任意日期、时间
 -----------
 
@@ -43,9 +59,20 @@ getTimeString(); //返回格式为HH:mm
 ```java
 setShowDate(int pYear, int pMonth, int pDay)
 ```
+> 中式日期选择器
+```java
+setGregorianDate(int pYear, int pMonth, int pDay) //设置公历日期
+setLunarDate(int pYear, int pMonth, int pDay) //设置农历日期
+```
 > 时间选择器
 ```java
 setShowTime(int pHour, int pMinute)
+```
+
+切换公历、农历显示(ChineseDatePicker才有)
+------------------------------
+```java
+showGregorian(boolean pIsGregorian) //true 显示公历 false 显示农历
 ```
 使用方法：
 -----
@@ -58,7 +85,14 @@ setShowTime(int pHour, int pMinute)
     android:id="@+id/dp_picker"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"/>
-```    
+```
+中式日期选择器
+```java
+<com.nd.ent.widget.ChineseDatePicker
+    android:id="@+id/dp_picker"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"/>
+```
 时间选择器
 ```xml
 <com.nd.ent.widget.TimePicker
@@ -68,29 +102,30 @@ setShowTime(int pHour, int pMinute)
 ```
 > 2.直接在代码中创建相应的实例使用
 
-日期选择器 :
+日期选择器
 ```java
 DatePicker datePicker = new DatePicker(this);
 ```
-
-时间选择器:
- ```java
+中式日期选择器
+```java
+ChineseDatePicker datePicker = new ChineseDatePicker(this);
+```
+时间选择器
+```java
 TimePicker timePicker = new TimePicker(this);
 ```
-
 属性设置：
 -----
 
 > 1.代码动态设置（日期选择器，时间选择器都使用下面的方法）
 
  - 设置背景色：
- ```java
+```java
 setPickerBackgroundColor(@ColorInt int pColor)
-setPickerBackgroundResource(@DrawableRes int pResId)`
+setPickerBackgroundResource(@DrawableRes int pResId)
 setPickerBackground(Drawable pDrawable)
 ```
-
- - 设置可见的选项数量：
+- 设置可见的选项数量：
 ```java
 setVisibleItems(int pVisibleItems)
 ```
@@ -99,12 +134,10 @@ setVisibleItems(int pVisibleItems)
 ```java
 setCycle(boolean pIsCycle)
 ```
-
  - 默认字体大小
 ```java
 setItemSize(int pItemSize)
 ```
-  
  - 选中的字体大小
 ```java
 setSelectedItemSize(int pSelectedItemSize)
@@ -117,26 +150,26 @@ setItemColor(@ColorInt int pItemColor)
  
  - 选中的字体颜色
 
-```java
-setSelectedColor(@ColorInt int pSelectedColor)
-```
+ ```java
+ setSelectedColor(@ColorInt int pSelectedColor)
+ ```
 
  - 宽度
 
-```java
-setItemWidth(int pItemWidth)
-```
+ ```java
+ setItemWidth(int pItemWidth)
+ ```
 
  - 选中的背景图片
 
-```java
-setCenterDrawableId(@DrawableRes int pCenterDrawableId)
-```
+ ```java
+ setCenterDrawableId(@DrawableRes int pCenterDrawableId)
+ ```
  
 
 > 2.XML中静态设置
 
-在布局根节点添加 
+在布局根节点添加
 ```xml
 xmlns:picker="http://schemas.android.com/apk/res-auto"
 ```
@@ -144,51 +177,42 @@ xmlns:picker="http://schemas.android.com/apk/res-auto"
 通过下面属性进行设置
 
  - 日期选择器
-```java
+```xml
 picker:ent_picker_date_bg_color="#ffffff" //背景色
-
 picker:ent_picker_date_center_drawable="@drawable/item_center_bg" // 选中的背景图片
-
 picker:ent_picker_date_item_color="#ff0000" //默认字体颜色
-
 picker:ent_picker_date_item_selected_color="#0000ff" //选中字体颜色
-
-picker:ent_picker_date_item_size="@dimen/default_size" //默认字体大小(必须在dimen文件中定义相应的值)
-
+picker:ent_picker_date_item_size="@dimen/default_size"//默认字体大小(必须在dimen文件中定义相应的值)
 picker:ent_picker_date_item_width="90dp" //宽度
-
-picker:ent_picker_date_selected_item_size="@dimen/selected_size" //选中字体大小(必须在dimen文件中定义相应的值)
-
+picker:ent_picker_date_selected_item_size="@dimen/selected_size"//选中字体大小(必须在dimen文件中定义相应的值)
 picker:ent_picker_date_visible_count="3" //可见的选项数量
 ```
  - 时间选择器
-```java
-picker:ent_picker_time_bg_color="#ffffff"  //背景色
-
+```xml
+picker:ent_picker_time_bg_color="#ffffff" //背景色
 picker:ent_picker_time_center_drawable="@drawable/item_center_bg" // 选中的背景图片
-
 picker:ent_picker_time_item_color="#ff0000" //默认字体颜色
-
 picker:ent_picker_time_item_selected_color="#0000ff" //选中字体颜色
-
-picker:ent_picker_time_item_size="@dimen/default_size" //默认字体大小(必须在dimen文件中定义相应的值)
-
+picker:ent_picker_time_item_size="@dimen/default_size"//默认字体大小(必须在dimen文件中定义相应的值)
 picker:ent_picker_time_item_width="90dp" //宽度
-
-picker:ent_picker_time_selected_item_size="@dimen/selected_size" //选中字体大小(必须在dimen文件中定义相应的值)
-
+picker:ent_picker_time_selected_item_size="@dimen/selected_size"//选中字体大小(必须在dimen文件中定义相应的值)
 picker:ent_picker_time_visible_count="3" //可见的选项数量
 ```
 > 3.通过样式进行设置
 
- - 日期选择器
+ - 日期选择器、中式日期选择器
 ```xml
 <com.nd.ent.widget.DatePicker 
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         style="@style/date_picker_style"/>
 ```
-
+```xml
+<com.nd.ent.widget.ChineseDatePicker 
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/date_picker_style"/>
+```
 或在全局样式中使用
 
 ```xml
