@@ -26,11 +26,10 @@
  - 更改宽度
  - 更新选中的背景图片
 
-Gradle依赖
-----------
-```gradle
-    compile "com.nd.ent:TimePicker:0.0.3.picker
-```
+Demo
+----
+
+![](<https://github.com/jybin88/DateAndTimePicker/raw/master/demo/demo.gif>)
 
 获取选中的日期、时间
 ----------
