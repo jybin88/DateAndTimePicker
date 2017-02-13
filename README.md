@@ -26,6 +26,21 @@
  - 更改宽度
  - 更新选中的背景图片
 
+Gradle依赖
+---------
+> 1.在project的build.gradle添加如下代码(如下图)
+```xml
+allprojects {
+    repositories {
+        ...
+        maven { url "https://jitpack.io" }
+    }
+}
+```
+> 2.在Module的build.gradle添加依赖
+```gradle
+compile 'com.github.jybin88:DateAndTimePicker:v0.1'
+```
 Demo
 ----
 
