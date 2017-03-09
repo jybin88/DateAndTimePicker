@@ -37,6 +37,8 @@ allprojects {
     }
 }
 ```
+![](<https://github.com/jybin88/public/raw/master/dependence.png>)
+
 > 2.在Module的build.gradle添加依赖
 ```gradle
 compile 'com.github.jybin88:DateAndTimePicker:v0.1'
